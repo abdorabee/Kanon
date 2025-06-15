@@ -15,7 +15,7 @@ export function Footer() {
               </a>
             </div>
             <p className="text-[#adadad] text-base font-normal leading-normal">
-              © 2024 Kanon. All rights reserved.
+              © 2025 Kanon. All rights reserved.
             </p>
           </div>
         </div>
