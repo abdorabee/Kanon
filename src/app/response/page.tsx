@@ -1,9 +1,10 @@
 import { ResponseDisplay } from "@/app/components/ui/ResponseDisplay";
 import { Issue } from '@/app/lib/types';
 
-export default function ResponsePage({ searchParams }: { searchParams: { prompt?: string; issues?: string } }) {
-  const prompt = searchParams.prompt || 'No prompt provided';
-  const issues: Issue[] = searchParams.issues ? JSON.parse(decodeURIComponent(searchParams.issues)) : [];
+export default async function ResponsePage({ searchParams }: { searchParams: Promise<{ prompt?: string; issues?: string }> }) {
+  const params = await searchParams;
+  const prompt = params.prompt || 'No prompt provided';
+  const issues: Issue[] = params.issues ? JSON.parse(decodeURIComponent(params.issues)) : [];
 
   return <ResponseDisplay prompt={prompt} issues={issues} />;
 }
