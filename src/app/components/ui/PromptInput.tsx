@@ -1,13 +1,14 @@
-"use client";
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from './Button';
 import { submitLegalPrompt } from '../../lib/api';
-import { DocumentWithIssues } from '../../lib/types';
+import { Issue } from '../../lib/types';
 
 export function PromptInput() {
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -15,14 +16,19 @@ export function PromptInput() {
     if (!prompt.trim()) return;
 
     setLoading(true);
+    setError(null);
     try {
-      const documents = await submitLegalPrompt(prompt);
-      // Serialize documents for URL (base64 to avoid query length issues)
-      const encodedDocs = btoa(JSON.stringify(documents));
-      router.push(`/response?prompt=${encodeURIComponent(prompt)}&documents=${encodeURIComponent(encodedDocs)}`);
+      const issues = await submitLegalPrompt(prompt);
+      const encodedIssues = btoa(JSON.stringify(issues));
+      router.push(`/response?prompt=${encodeURIComponent(prompt)}&issues=${encodeURIComponent(encodedIssues)}`);
     } catch (error) {
-      console.error('Error submitting prompt:', error);
-      alert('Failed to fetch documents. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Prompt submission error:', errorMessage);
+      setError(
+        errorMessage.includes('Network error')
+          ? errorMessage
+          : `Failed to fetch issues: ${errorMessage}. Try formatting as "YYYY/NNNN" (e.g., 2025/1562).`
+      );
     } finally {
       setLoading(false);
     }
@@ -45,7 +51,7 @@ export function PromptInput() {
           </svg>
         </div>
         <input
-          placeholder="Enter your legal prompt (e.g., case number 123 or John)"
+          placeholder="Enter your legal prompt (e.g., case number 2025/1562 or John)"
           className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4d4d4d] bg-neutral-800 focus:border-[#4d4d4d] h-full placeholder:text-[#adadad] px-[15px] rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal @[480px]:text-base"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
@@ -81,6 +87,9 @@ export function PromptInput() {
           </Button>
         </div>
       </div>
+      {error && (
+        <p className="text-red-500 text-sm font-normal leading-normal mt-2">{error}</p>
+      )}
     </label>
   );
 }

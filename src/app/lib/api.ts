@@ -1,16 +1,27 @@
-import { DocumentWithIssues } from './types';
+import { Issue } from './types';
 
-export async function submitLegalPrompt(prompt: string): Promise<DocumentWithIssues[]> {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/doc';
+// Extract case number (e.g., "2025/1562" or "case number 2025/1562")
+function parsePrompt(prompt: string): { case_number?: string; search?: string } {
+  const caseNumberMatch = prompt.match(/(?:case number\s+)?(\d{4}\/\d+)/i);
+  if (caseNumberMatch) {
+    return { case_number: caseNumberMatch[1] };
+  }
+  return { search: prompt };
+}
+
+export async function submitLegalPrompt(prompt: string): Promise<Issue[]> {
   const query = new URLSearchParams({
-    search: prompt,
     skip: '0',
     limit: '10',
-    include_issues: 'true',
+    ...(parsePrompt(prompt).case_number
+      ? { case_number: parsePrompt(prompt).case_number! }
+      : { search: prompt }),
   });
 
+  const endpoint = `/api/issues`;
+
   try {
-    const response = await fetch(`${API_URL}/documents/?${query.toString()}`, {
+    const response = await fetch(`${endpoint}?${query.toString()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -18,13 +29,23 @@ export async function submitLegalPrompt(prompt: string): Promise<DocumentWithIss
     });
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
-    return data as DocumentWithIssues[];
+    if (!Array.isArray(data)) {
+      throw new Error('Unexpected response format: Expected an array of issues');
+    }
+
+    return data as Issue[];
   } catch (error) {
-    console.error('Error fetching from API:', error);
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('Error fetching from API:', {
+      prompt,
+      url: `${endpoint}?${query.toString()}`,
+      error: errorMessage,
+    });
+    throw new Error(`Failed to fetch issues: ${errorMessage}`);
   }
 }

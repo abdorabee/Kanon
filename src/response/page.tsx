@@ -1,11 +1,9 @@
 import { ResponseDisplay } from "@/app/components/ui/ResponseDisplay";
-import { DocumentWithIssues } from "@/app/lib/types";
+import { Issue } from "@/app/lib/types";
 
-export default function ResponsePage({ searchParams }: { searchParams: { prompt?: string; documents?: string } }) {
+export default function ResponsePage({ searchParams }: { searchParams: { prompt?: string; issues?: string } }) {
   const prompt = searchParams.prompt || 'No prompt provided';
-  const documents: DocumentWithIssues[] = searchParams.documents
-    ? JSON.parse(atob(searchParams.documents))
-    : [];
+  const issues: Issue[] = searchParams.issues ? JSON.parse(atob(searchParams.issues)) : [];
 
-  return <ResponseDisplay prompt={prompt} documents={documents} />;
+  return <ResponseDisplay prompt={prompt} issues={issues} />;
 }
