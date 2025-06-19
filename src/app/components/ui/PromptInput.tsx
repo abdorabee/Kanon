@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from './Button';
 import { submitLegalPrompt } from '../../lib/api';
+import { DocumentWithIssues } from '../../lib/types';
 
 export function PromptInput() {
   const [prompt, setPrompt] = useState('');
@@ -15,12 +16,13 @@ export function PromptInput() {
 
     setLoading(true);
     try {
-      const response = await submitLegalPrompt(prompt);
-      // For demo, navigate to response page with prompt as query
-      router.push(`/response?prompt=${encodeURIComponent(prompt)}&response=${encodeURIComponent(response)}`);
+      const documents = await submitLegalPrompt(prompt);
+      // Serialize documents for URL (base64 to avoid query length issues)
+      const encodedDocs = btoa(JSON.stringify(documents));
+      router.push(`/response?prompt=${encodeURIComponent(prompt)}&documents=${encodeURIComponent(encodedDocs)}`);
     } catch (error) {
       console.error('Error submitting prompt:', error);
-      alert('Failed to process prompt. Please try again.');
+      alert('Failed to fetch documents. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -43,7 +45,7 @@ export function PromptInput() {
           </svg>
         </div>
         <input
-          placeholder="Enter your legal prompt here"
+          placeholder="Enter your legal prompt (e.g., case number 123 or John)"
           className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4d4d4d] bg-neutral-800 focus:border-[#4d4d4d] h-full placeholder:text-[#adadad] px-[15px] rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal @[480px]:text-base"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
