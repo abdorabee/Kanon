@@ -1,8 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kanon - AI-Powered Legal Assistant
+
+Kanon is an advanced AI-powered legal assistant designed to revolutionize legal workflows for professionals in the legal industry. By leveraging cutting-edge technology, Kanon streamlines legal research, document analysis, and case strategy development.
+
+![Kanon Legal Assistant](public/images/background.jpg)
+
+## Features
+
+### 🔍 Advanced Legal Research
+Quickly access and analyze relevant legal information from a vast database of cases, statutes, and regulations.
+
+### 📄 Document Analysis
+Efficiently review and extract key insights from legal documents, contracts, and briefs.
+
+### 📊 Case Strategy
+Develop effective case strategies with AI-driven insights and predictive analytics.
+
+## Technology Stack
+
+- **Frontend**: Next.js 15, React 19
+- **Styling**: Tailwind CSS 4
+- **Animation**: Motion
+- **Development**: TypeScript
+- **Containerization**: Docker
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.0 or later
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/kanon.git
+   cd kanon
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
+
+3. Create a `.env` file in the root directory with necessary environment variables (if any).
+
+### Running the Application
+
+#### Development Mode
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +67,64 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Build the application for production:
 
-## Learn More
+```bash
+npm run build
+# or
+yarn build
+# or
+pnpm build
+# or
+bun build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the production server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+# or
+yarn start
+# or
+pnpm start
+# or
+bun start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Docker Deployment
 
-## Deploy on Vercel
+The application can also be run using Docker:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Build the Docker image:
+   ```bash
+   docker build -t kanon .
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Run the container:
+   ```bash
+   docker run -p 3000:3000 kanon
+   ```
+
+## Project Structure
+
+- `/src/app`: Main application code
+  - `/components`: UI components
+  - `/lib`: Utility functions and libraries
+  - `/api`: API routes
+  - `/response`: Response handling
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Built with ❤️ for the legal community
