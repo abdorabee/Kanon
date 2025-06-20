@@ -20,7 +20,8 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (err) {
+    console.error('API Error:', err);
     return NextResponse.json(
       { detail: 'Failed to reach backend server' },
       { status: 500 }
