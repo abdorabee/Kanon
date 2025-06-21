@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from './Button';
@@ -19,79 +19,94 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-[#1a1a1a] text-white p-4 @container">
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white p-4 py-8 @container">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="max-w-[960px] w-full flex flex-col gap-6"
+        className="max-w-[1000px] w-full flex flex-col gap-6"
       >
-        <h1 className="text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl text-center">
-          Case Details
-        </h1>
+        {/* Search Summary Header */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-6"
+          className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-4 shadow-[10px_10px_20px_rgba(0,0,0,0.3),-10px_-10px_20px_rgba(60,60,60,0.2)]"
         >
-          <h2 className="text-lg font-bold leading-tight">Prompt:</h2>
-          <p className="text-[#adadad] text-base font-normal leading-normal mb-4">{prompt}</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#e0e0e0] tracking-wide">
+            Search Results: <span className="text-[#4caf50] bg-[#2e7d32] px-2 py-1 rounded-full">{issues.length}</span>
+          </h1>
+          <p className="text-[#adadad] text-sm md:text-base mt-2">{prompt}</p>
         </motion.div>
+
+        {/* Issues Table */}
         {issues.length === 0 ? (
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-white text-base font-normal leading-normal text-center"
+            className="text-white text-base md:text-lg text-center"
           >
             No case details found for your query.
           </motion.p>
         ) : (
-          issues.map((issue, index) => (
-            <motion.div
-              key={issue._id}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }}
-              className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-6"
-            >
-              <h2 className="text-lg font-bold leading-tight">Case {issue.case_number}</h2>
-              <p className="text-[#adadad] text-sm font-normal leading-normal mb-2">
-                Table: {issue.table_name}
-              </p>
-              <div className="flex flex-col gap-2">
-                <p className="text-white text-base font-normal leading-normal">
-                  <strong>Plaintiff:</strong> {issue.plaintiff_name}
-                </p>
-                <p className="text-white text-base font-normal leading-normal">
-                  <strong>Defendant(s):</strong> {issue.defendant_names.join(', ')}
-                </p>
-                <button
-                  onClick={() => toggleIssueDetails(issue._id)}
-                  className="text-[#adadad] text-sm font-medium leading-normal hover:underline text-left"
-                >
-                  {expandedIssues[issue._id] ? 'Hide Judgment Details' : 'Show Judgment Details'}
-                </button>
-                <AnimatePresence>
-                  {expandedIssues[issue._id] && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-[#2a2a2a] p-4 rounded-lg border border-[#4d4d4d] mt-2"
-                    >
-                      <p className="text-white text-sm font-normal leading-normal">
-                        <strong>Judgment:</strong> {issue.judgment_or_decision_info}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          ))
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-4 shadow-[5px_5px_15px_rgba(0,0,0,0.4),-5px_-5px_15px_rgba(80,80,80,0.2)] overflow-x-auto"
+          >
+            <table className="w-full text-right min-w-[300px]">
+              <thead className="bg-[#2a2a2a] border-b border-[#5a5a5a]">
+                <tr>
+                  <th className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0]">Case Number</th>
+                  <th className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0]">Table</th>
+                  <th className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0]">Plaintiff</th>
+                  <th className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0]">Defendant(s)</th>
+                  <th className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0]">Judgment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {issues.map((issue, index) => (
+                  <motion.tr
+                    key={issue._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.5 + index * 0.2 }}
+                    className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors"
+                  >
+                    <td className="py-3 px-4 text-sm md:text-base text-white">{issue.case_number}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-[#b0b0b0]">{issue.table_name}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-white">{issue.plaintiff_name}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-white">{issue.defendant_names.join(', ')}</td>
+                    <td className="py-3 px-4 text-sm md:text-base">
+                      <button
+                        onClick={() => toggleIssueDetails(issue._id)}
+                        className="text-[#4caf50] hover:text-[#66bb6a] text-sm md:text-base font-medium underline"
+                      >
+                        {expandedIssues[issue._id] ? 'Hide' : 'View'}
+                      </button>
+                      <AnimatePresence>
+                        {expandedIssues[issue._id] && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                            className="mt-2 p-2 bg-[#2a2a2a] rounded text-sm md:text-base text-white"
+                          >
+                            {issue.judgment_or_decision_info}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </motion.div>
         )}
+
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
