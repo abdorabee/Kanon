@@ -1,10 +1,8 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import Footer from './components/layout/Footer';
-import { getServerTranslation } from './lib/translation';
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const translations = await getServerTranslation('en'); // Default to 'en' on server
 
   return (
     <html lang="en">

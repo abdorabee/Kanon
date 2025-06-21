@@ -30,7 +30,9 @@ interface Translation {
 export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const router = useRouter();
   const [expandedIssues, setExpandedIssues] = useState<{ [key: string]: boolean }>({});
-  const [language, setLanguage] = useState<'en' | 'ar'>('en');
+  // We track language state but don't directly use it in rendering
+  // It's used in the useEffect for loading translations
+  const [, setLanguage] = useState<'en' | 'ar'>('en');
   const [translations, setTranslations] = useState<Translation>({
     searchResults: 'Search Results',
     caseNumber: 'Case Number',
