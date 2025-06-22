@@ -33,15 +33,16 @@ import { useState } from 'react';
      };
 
      return (
-       <label className="flex flex-col min-w-40 h-14 w-full max-w-[480px] @[480px]:h-16">
+       <label className="flex flex-col min-w-40 h-12 sm:h-14 w-full max-w-[480px] @[480px]:h-16">
          <div className="flex w-full flex-1 items-stretch rounded-xl h-full">
            <div
-             className="text-[#adadad] flex border border-[#4d4d4d] bg-neutral-800 items-center justify-center pl-[15px] rounded-l-xl border-r-0"
+             className="text-[#adadad] flex border border-[#4d4d4d] bg-neutral-800 items-center justify-center pl-2 sm:pl-[15px] rounded-l-xl border-r-0"
            >
              <svg
                xmlns="http://www.w3.org/2000/svg"
-               width="20px"
-               height="20px"
+               width="16px"
+               height="16px"
+               className="sm:w-[20px] sm:h-[20px]"
                fill="currentColor"
                viewBox="0 0 256 256"
              >
@@ -49,18 +50,18 @@ import { useState } from 'react';
              </svg>
            </div>
            <input
-             placeholder="Enter your legal prompt (e.g., case number 2025/1562 or John)"
-             className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4d4d4d] bg-neutral-800 focus:border-[#4d4d4d] h-full placeholder:text-[#adadad] px-[15px] rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal @[480px]:text-base"
+             placeholder="Enter case number or name..."
+             className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#4d4d4d] bg-neutral-800 focus:border-[#4d4d4d] h-full placeholder:text-[#adadad] px-2 sm:px-[15px] rounded-r-none border-r-0 pr-1 sm:pr-2 rounded-l-none border-l-0 pl-1 sm:pl-2 text-xs sm:text-sm font-normal leading-normal @[480px]:text-base"
              value={prompt}
              onChange={(e) => setPrompt(e.target.value)}
              disabled={loading}
              aria-label="Legal prompt input"
            />
-           <div className="flex items-center justify-center rounded-r-xl border-l-0 border border-[#4d4d4d] bg-neutral-800 pr-[7px]">
+           <div className="flex items-center justify-center rounded-r-xl border-l-0 border border-[#4d4d4d] bg-neutral-800 pr-1 sm:pr-[7px]">
              <Button type="submit" onClick={handleSubmit} disabled={loading}>
                {loading ? (
                  <svg
-                   className="animate-spin h-5 w-5 text-white"
+                   className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white"
                    xmlns="http://www.w3.org/2000/svg"
                    fill="none"
                    viewBox="0 0 24 24"
@@ -80,13 +81,13 @@ import { useState } from 'react';
                    />
                  </svg>
                ) : (
-                 'Get started'
+                 <span className="text-xs sm:text-sm md:text-base">Get started</span>
                )}
              </Button>
            </div>
          </div>
          {error && (
-           <p className="text-red-500 text-sm font-normal leading-normal mt-2">{error}</p>
+           <p className="text-red-500 text-xs sm:text-sm font-normal leading-normal mt-2">{error}</p>
          )}
        </label>
      );
