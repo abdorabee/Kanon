@@ -73,24 +73,24 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white p-4 py-8 @container">
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white p-2 sm:p-4 py-6 sm:py-8 @container">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="max-w-[1000px] w-full flex flex-col gap-6"
+        className="max-w-[1000px] w-full flex flex-col gap-4 sm:gap-6"
       >
         {/* Search Summary Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-4 shadow-[10px_10px_20px_rgba(0,0,0,0.3),-10px_-10px_20px_rgba(60,60,60,0.2)]"
+          className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-3 sm:p-4 shadow-[10px_10px_20px_rgba(0,0,0,0.3),-10px_-10px_20px_rgba(60,60,60,0.2)]"
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-[#e0e0e0] tracking-wide">
-            {translations.searchResults}: <span className="text-[#4caf50] bg-[#2e7d32] px-2 py-1 rounded-full">{issues.length}</span>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#e0e0e0] tracking-wide">
+            {translations.searchResults}: <span className="text-[#4caf50] bg-[#2e7d32] px-2 py-1 rounded-full text-sm sm:text-base">{issues.length}</span>
           </h1>
-          <p className="text-[#adadad] text-sm md:text-base mt-2">{prompt}</p>
+          <p className="text-[#adadad] text-xs sm:text-sm md:text-base mt-2">{prompt}</p>
         </motion.div>
 
         {/* Issues Table */}
@@ -99,7 +99,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-white text-base md:text-lg text-center"
+            className="text-white text-sm sm:text-base md:text-lg text-center p-4"
           >
             {translations.noResults}
           </motion.p>
@@ -108,33 +108,33 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="overflow-x-auto bg-neutral-800 border border-[#4d4d4d] rounded-xl p-4 shadow-[10px_10px_20px_rgba(0,0,0,0.3),-10px_-10px_20px_rgba(60,60,60,0.2)]"
+            className="overflow-x-auto w-full bg-neutral-800 border border-[#4d4d4d] rounded-xl p-2 sm:p-4 shadow-[10px_10px_20px_rgba(0,0,0,0.3),-10px_-10px_20px_rgba(60,60,60,0.2)]"
           >
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse min-w-[640px]">
               <thead>
                 <tr className="border-b border-[#4d4d4d]">
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">Properties</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-left">Properties</th>
                   {/* Column headers are now the property names */}
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.caseNumber}</th>
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.table}</th>
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.plaintiff}</th>
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.defendant}</th>
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.judgment}</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.caseNumber}</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.table}</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.plaintiff}</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.defendant}</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.judgment}</th>
                 </tr>
               </thead>
               <tbody>
                 {/* Each row now represents a case */}
                 {issues.map((issue, index) => (
                   <tr key={issue._id} className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
-                    <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">Case {index + 1}</th>
-                    <td className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.case_number}</td>
-                    <td className="py-3 px-4 text-sm md:text-base text-[#b0b0b0] text-center">{issue.table_name}</td>
-                    <td className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.plaintiff_name}</td>
-                    <td className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.defendant_names.join(', ')}</td>
-                    <td className="py-3 px-4 text-sm md:text-base text-center">
+                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#e0e0e0] text-left">Case {index + 1}</th>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-white text-center">{issue.case_number}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#b0b0b0] text-center">{issue.table_name}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-white text-center">{issue.plaintiff_name}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-white text-center truncate max-w-[120px]" title={issue.defendant_names.join(', ')}>{issue.defendant_names.join(', ')}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-center">
                       <button
                         onClick={() => toggleIssueDetails(issue._id)}
-                        className="text-[#4caf50] hover:text-[#66bb6a] text-sm md:text-base font-medium underline"
+                        className="text-[#4caf50] hover:text-[#66bb6a] text-xs sm:text-sm md:text-base font-medium underline"
                       >
                         {expandedIssues[issue._id] ? translations.hide : translations.view}
                       </button>
@@ -145,7 +145,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                            className="mt-2 p-2 bg-[#2a2a2a] rounded text-sm md:text-base text-white"
+                            className="mt-2 p-2 bg-[#2a2a2a] rounded text-xs sm:text-sm md:text-base text-white"
                           >
                             {issue.judgment_or_decision_info}
                           </motion.div>
@@ -163,7 +163,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.6 + issues.length * 0.2 }}
-          className="flex justify-center"
+          className="flex justify-center mt-2 sm:mt-4"
         >
           <Button onClick={() => router.push('/')}>{translations.backToHome}</Button>
         </motion.div>
