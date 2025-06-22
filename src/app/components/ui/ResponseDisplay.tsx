@@ -108,63 +108,30 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-neutral-800 border border-[#4d4d4d] rounded-xl p-4 shadow-[5px_5px_15px_rgba(0,0,0,0.4),-5px_-5px_15px_rgba(80,80,80,0.2)] overflow-x-auto"
+            className="overflow-x-auto bg-neutral-800 border border-[#4d4d4d] rounded-xl p-4 shadow-[10px_10px_20px_rgba(0,0,0,0.3),-10px_-10px_20px_rgba(60,60,60,0.2)]"
           >
-            <table className="w-full min-w-[300px]">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b border-[#4d4d4d]">
+                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">Properties</th>
+                  {/* Column headers are now the property names */}
+                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.caseNumber}</th>
+                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.table}</th>
+                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.plaintiff}</th>
+                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.defendant}</th>
+                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center">{translations.judgment}</th>
+                </tr>
+              </thead>
               <tbody>
-                {/* Header row with issue IDs */}
-                <tr className="bg-[#2a2a2a] border-b border-[#5a5a5a]">
-                  <th className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left"></th>
-                  {issues.map((issue, index) => (
-                    <motion.th
-                      key={issue._id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.5 + index * 0.2 }}
-                      className="py-2 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-center"
-                    >
-                      Case {index + 1}
-                    </motion.th>
-                  ))}
-                </tr>
-                
-                {/* Case Number row */}
-                <tr className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">{translations.caseNumber}</th>
-                  {issues.map((issue) => (
-                    <td key={`${issue._id}-case-number`} className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.case_number}</td>
-                  ))}
-                </tr>
-                
-                {/* Table row */}
-                <tr className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">{translations.table}</th>
-                  {issues.map((issue) => (
-                    <td key={`${issue._id}-table`} className="py-3 px-4 text-sm md:text-base text-[#b0b0b0] text-center">{issue.table_name}</td>
-                  ))}
-                </tr>
-                
-                {/* Plaintiff row */}
-                <tr className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">{translations.plaintiff}</th>
-                  {issues.map((issue) => (
-                    <td key={`${issue._id}-plaintiff`} className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.plaintiff_name}</td>
-                  ))}
-                </tr>
-                
-                {/* Defendant row */}
-                <tr className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">{translations.defendant}</th>
-                  {issues.map((issue) => (
-                    <td key={`${issue._id}-defendant`} className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.defendant_names.join(', ')}</td>
-                  ))}
-                </tr>
-                
-                {/* Judgment row */}
-                <tr className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
-                  <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">{translations.judgment}</th>
-                  {issues.map((issue) => (
-                    <td key={`${issue._id}-judgment`} className="py-3 px-4 text-sm md:text-base text-center">
+                {/* Each row now represents a case */}
+                {issues.map((issue, index) => (
+                  <tr key={issue._id} className="border-b border-[#4d4d4d] hover:bg-[#3d3d3d] transition-colors">
+                    <th className="py-3 px-4 text-sm md:text-base font-semibold text-[#e0e0e0] text-left">Case {index + 1}</th>
+                    <td className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.case_number}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-[#b0b0b0] text-center">{issue.table_name}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.plaintiff_name}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-white text-center">{issue.defendant_names.join(', ')}</td>
+                    <td className="py-3 px-4 text-sm md:text-base text-center">
                       <button
                         onClick={() => toggleIssueDetails(issue._id)}
                         className="text-[#4caf50] hover:text-[#66bb6a] text-sm md:text-base font-medium underline"
@@ -185,8 +152,8 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                         )}
                       </AnimatePresence>
                     </td>
-                  ))}
-                </tr>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </motion.div>

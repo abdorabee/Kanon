@@ -2,7 +2,7 @@
 import { useState } from 'react';
    import { useRouter } from 'next/navigation';
    import { Button } from './Button';
-   import { submitLegalPrompt } from '../../lib/api';
+   
 
    export function PromptInput() {
      const [prompt, setPrompt] = useState('');
@@ -17,13 +17,16 @@ import { useState } from 'react';
        setLoading(true);
        setError(null);
        try {
-         const issues = await submitLegalPrompt(prompt);
-         const encodedIssues = encodeURIComponent(JSON.stringify(issues));
-         router.push(`/response?prompt=${encodeURIComponent(prompt)}&issues=${encodedIssues}`);
+         // Extract case number if present, otherwise use the prompt as search term
+         const caseNumberMatch = prompt.match(/(?:case number\s+)?(\d{4}\/\d+)/i);
+         const searchParam = caseNumberMatch ? `case=${encodeURIComponent(caseNumberMatch[1])}` : `q=${encodeURIComponent(prompt)}`;
+         
+         // Use a clean URL with just the search parameter
+         router.push(`/response?${searchParam}`);
        } catch (error) {
          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
          console.error('Prompt submission error:', errorMessage);
-         setError(`Failed to fetch issues: ${errorMessage}. Try formatting as "YYYY/NNNN" (e.g., 2025/1562).`);
+         setError(`Failed to process prompt. Try formatting as "YYYY/NNNN" (e.g., 2025/1562).`);
        } finally {
          setLoading(false);
        }
