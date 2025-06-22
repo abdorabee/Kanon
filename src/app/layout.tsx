@@ -1,16 +1,26 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import Footer from './components/layout/Footer';
+import { Amiri, Noto_Naskh_Arabic } from 'next/font/google';
+
+// Configure the fonts
+const amiri = Amiri({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-amiri',
+});
+
+const notoNaskhArabic = Noto_Naskh_Arabic({
+  weight: ['400', '700'],
+  subsets: ['arabic'],
+  variable: '--font-noto-naskh-arabic',
+});
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <html lang="en">
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -29,7 +39,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white">
+      <body className={`min-h-screen flex flex-col bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white ${amiri.variable} ${notoNaskhArabic.variable}`}>
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

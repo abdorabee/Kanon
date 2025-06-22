@@ -2,7 +2,7 @@
 import { useState } from 'react';
    import { useRouter } from 'next/navigation';
    import { Button } from './Button';
-   import { submitLegalPrompt } from '../../lib/api';
+   
 
    export function PromptInput() {
      const [prompt, setPrompt] = useState('');

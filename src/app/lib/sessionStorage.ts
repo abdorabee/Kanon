@@ -2,7 +2,7 @@
 // In a production environment, you would use a more robust solution like Redis
 
 interface SessionData {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // In-memory storage (this will be cleared on server restart)
@@ -13,7 +13,7 @@ const sessionStore: SessionData = {};
  * @param id - Unique identifier for the session
  * @param data - Data to store
  */
-export function storeSessionData(id: string, data: any): void {
+export function storeSessionData(id: string, data: unknown): void {
   sessionStore[id] = data;
 }
 
@@ -22,7 +22,7 @@ export function storeSessionData(id: string, data: any): void {
  * @param id - Unique identifier for the session
  * @returns The stored data or null if not found
  */
-export function getSessionData(id: string): any {
+export function getSessionData(id: string): unknown {
   return sessionStore[id] || null;
 }
 
