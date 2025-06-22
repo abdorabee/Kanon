@@ -1,5 +1,10 @@
 import { Issue } from './types';
 
+interface ApiResponse {
+  sessionId: string;
+  data: Issue[];
+}
+
 // Extract case number (e.g., "2025/1562" or "case number 2025/1562")
 function parsePrompt(prompt: string): { case_number?: string; search?: string } {
   const caseNumberMatch = prompt.match(/(?:case number\s+)?(\d{4}\/\d+)/i);
@@ -9,7 +14,7 @@ function parsePrompt(prompt: string): { case_number?: string; search?: string } 
   return { search: prompt };
 }
 
-export async function submitLegalPrompt(prompt: string): Promise<Issue[]> {
+export async function submitLegalPrompt(prompt: string): Promise<ApiResponse> {
   const query = new URLSearchParams({
     skip: '0',
     limit: '10',
@@ -33,12 +38,17 @@ export async function submitLegalPrompt(prompt: string): Promise<Issue[]> {
       throw new Error(`API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    const data = await response.json();
-    if (!Array.isArray(data)) {
-      throw new Error('Unexpected response format: Expected an array of issues');
+    const responseData = await response.json();
+    
+    // Log the response data for debugging
+    console.log('API response:', responseData);
+    
+    // Check if the response has the expected format
+    if (!responseData.sessionId) {
+      throw new Error('Unexpected response format: Missing sessionId');
     }
 
-    return data as Issue[];
+    return responseData as ApiResponse;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error('Error fetching from API:', {
