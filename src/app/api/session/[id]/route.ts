@@ -3,9 +3,11 @@ import { getSessionData } from '@/app/lib/sessionStorage';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const sessionId = params.id;
+  const { params } = context;
+  const resolvedParams = await params;
+  const sessionId = resolvedParams.id;
   
   try {
     // Retrieve data from session storage
