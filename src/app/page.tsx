@@ -6,24 +6,24 @@ import { MainLayout } from './components/layout/MainLayout';
 export default function Home() {
   return (
     <MainLayout>
-      <div className="@container">
-        <div className="@[480px]:p-4">
+      <div className="@container w-full">
+        <div className="p-0 sm:p-2 md:p-4">
           <Hero />
         </div>
       </div>
-      <div className="flex flex-col gap-10 px-4 py-10 @container">
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-white text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:tracking-[-0.033em] max-w-[720px]">
+      <div className="flex flex-col gap-6 sm:gap-8 md:gap-10 px-2 sm:px-4 py-6 sm:py-8 md:py-10 @container">
+        <div className="flex flex-col gap-4 sm:gap-6">
+          <div className="flex flex-col gap-2 sm:gap-4">
+            <h1 className="text-white text-2xl sm:text-[28px] md:text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:tracking-[-0.033em] max-w-[720px]">
               Key Features
             </h1>
-            <p className="text-white text-base font-normal leading-normal max-w-[720px]">
+            <p className="text-white text-sm sm:text-base font-normal leading-normal max-w-[720px]">
               Explore the core functionalities that make Kanon an indispensable tool for legal
               professionals.
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-3 p-0">
           <FeatureCard
             icon="MagnifyingGlass"
             title="Advanced Legal Research"
