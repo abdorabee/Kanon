@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { storeSessionData, generateSessionId } from '@/app/lib/sessionStorage';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -19,7 +20,18 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await response.json();
-    return NextResponse.json(data);
+    
+    // Generate a session ID for this result set
+    const sessionId = generateSessionId();
+    
+    // Store the data in server-side session
+    storeSessionData(sessionId, data);
+    
+    // Return the data along with the session ID
+    return NextResponse.json({
+      sessionId,
+      data
+    });
   } catch (err) {
     console.error('API Error:', err);
     return NextResponse.json(
@@ -28,16 +40,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-// export async function GET(request: Request) {
-//   try {
-//     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-//     const response = await fetch(`${backendUrl}/issues`);
-//     if (!response.ok) {
-//       return NextResponse.json({ error: 'Failed to fetch issues' }, { status: response.status });
-//     }
-//     const issues = await response.json();
-//     return NextResponse.json(issues);
-//   } catch {
-//     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-//   }
-// }
