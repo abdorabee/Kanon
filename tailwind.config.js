@@ -9,9 +9,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Add your custom colors here
+        // Using CSS variables for theme colors
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        background: 'var(--color-background)',
+        text: 'var(--color-text)',
+        accent: 'var(--color-accent)',
+        border: 'var(--color-border)',
+      },
+      backgroundColor: {
+        primary: 'var(--color-background)',
+      },
+      textColor: {
+        primary: 'var(--color-text)',
+      },
+      borderColor: {
+        primary: 'var(--color-border)',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Add a custom plugin to create light: variants
+    function({ addVariant }) {
+      addVariant('light', '.light &');
+    },
+  ],
+  corePlugins: {
+    // Ensure preflight is enabled for base styles
+    preflight: true,
+  },
 };

@@ -1,65 +1,92 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   // useEffect only runs on the client, so we can safely show the UI
   useEffect(() => {
+    console.log('[ThemeToggle] Initializing...');
     setMounted(true);
+    console.log('[ThemeToggle] Initialized with theme:', theme);
   }, []);
+  
+  // Update DOM classes when theme changes
+  useEffect(() => {
+    if (!mounted) return;
+    
+    console.log('[ThemeToggle] Theme changed to:', theme);
+    
+    // Update DOM classes directly to ensure visual changes
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    }
+    
+    console.log('[ThemeToggle] Updated DOM classes:', {
+      hasLightClass: document.documentElement.classList.contains('light'),
+      hasDarkClass: document.documentElement.classList.contains('dark'),
+      colorScheme: document.documentElement.style.colorScheme
+    });
+  }, [theme, mounted]);
 
-  if (!mounted) {
-    return null;
-  }
+  const toggleTheme = () => {
+    console.log('[ThemeToggle] Toggle clicked. Current theme:', theme);
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    console.log('[ThemeToggle] Set theme to:', newTheme);
+  };
+
+  // Don't render anything until mounted to avoid hydration mismatch
+  if (!mounted) return null;
 
   return (
     <div className="flex items-center gap-2">
       <button
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 dark:border-[#363636] bg-transparent text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors"
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        onClick={toggleTheme}
+        className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-transparent text-text hover:bg-secondary transition-colors"
+        aria-label={`Switch to ${theme === 'dark' ? "light" : "dark"} mode`}
+        data-testid="theme-toggle"
       >
-        {theme === "dark" ? (
+        {theme === 'dark' ? (
           // Sun icon for light mode
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
             fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
             stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            className="w-5 h-5"
           >
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+            />
           </svg>
         ) : (
           // Moon icon for dark mode
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
             fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
             stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            className="w-4 h-4"
           >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+            />
           </svg>
         )}
       </button>

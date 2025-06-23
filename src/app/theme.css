@@ -1,0 +1,49 @@
+/* Dark theme (default) */
+:root,
+html.dark {
+  --color-primary: #1a1a1a;
+  --color-secondary: #2d2d2d;
+  --color-background: #1a1a1a;
+  --color-text: #ffffff;
+  --color-accent: #3b82f6;
+  --color-border: #363636;
+}
+
+/* Light theme */
+html.light {
+  --color-primary: #ffffff;
+  --color-secondary: #f3f4f6;
+  --color-background: #ffffff;
+  --color-text: #1a1a1a;
+  --color-accent: #2563eb;
+  --color-border: #e5e7eb;
+}
+
+/* Direct styles for better visibility of theme changes */
+html.dark body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+html.light body {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/* Header styles for better visibility */
+html.dark header {
+  background-color: #1a1a1a;
+  border-color: #363636;
+  color: #ffffff;
+}
+
+html.light header {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+  color: #1a1a1a;
+}
+
+/* Add transition for smooth theme changes */
+html, body, header, button, a {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
