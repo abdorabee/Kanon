@@ -1,6 +1,9 @@
 import { Button } from './Button';
+import useTranslation from 'next-translate/useTranslation';
 
 export function Header() {
+  const { t } = useTranslation('common');
+  
   return (
     <header className="flex items-center justify-between whitespace-nowrap border-b border-[#363636] px-10 py-3 bg-[#1a1a1a]">
       <div className="flex items-center gap-4 text-white">
@@ -18,15 +21,15 @@ export function Header() {
             />
           </svg>
         </div>
-        <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Kanon</h2>
+        <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">{t('header.brand')}</h2>
       </div>
       <div className="flex flex-1 justify-end gap-8">
         <div className="flex items-center gap-9">
-          <a href="#" className="text-white text-sm font-medium leading-normal">Product</a>
-          <a href="#" className="text-white text-sm font-medium leading-normal">Pricing</a>
-          <a href="#" className="text-white text-sm font-medium leading-normal">Resources</a>
+          <a href="#" className="text-white text-sm font-medium leading-normal">{t('header.nav.product')}</a>
+          <a href="#" className="text-white text-sm font-medium leading-normal">{t('header.nav.pricing')}</a>
+          <a href="#" className="text-white text-sm font-medium leading-normal">{t('header.nav.resources')}</a>
         </div>
-        <Button>Get started</Button>
+        <Button translationKey="button.getStarted" />
       </div>
     </header>
   );

@@ -1,0 +1,66 @@
+{
+  "header": {
+    "brand": "Kanon",
+    "nav": {
+      "product": "Product",
+      "pricing": "Pricing",
+      "resources": "Resources"
+    }
+  },
+  "footer": {
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "contactUs": "Contact Us",
+    "copyright": "© 2025 Kanon. All rights reserved.",
+    "language": "Language",
+    "english": "EN",
+    "arabic": "AR"
+  },
+  "button": {
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "submit": "Submit",
+    "tryNow": "Try Now"
+  },
+  "hero": {
+    "title": "Revolutionize Your Legal Workflow with Kanon",
+    "description": "Kanon is an AI-powered legal assistant designed to streamline your legal research, document analysis, and case strategy. Experience the future of law with cutting-edge technology."
+  },
+  "features": {
+    "search": {
+      "title": "Advanced Legal Search",
+      "description": "Quickly find relevant cases, statutes, and legal documents with our powerful AI-driven search engine."
+    },
+    "analysis": {
+      "title": "Intelligent Document Analysis",
+      "description": "Extract key information, identify patterns, and get insights from complex legal documents in seconds."
+    },
+    "strategy": {
+      "title": "Strategic Case Planning",
+      "description": "Develop winning legal strategies with AI-powered recommendations based on similar cases and outcomes."
+    }
+  },
+  "callToAction": {
+    "title": "Ready to Transform Your Legal Practice?",
+    "description": "Join thousands of legal professionals already using Kanon to streamline their workflow and improve outcomes."
+  },
+  "promptInput": {
+    "placeholder": "Enter case number or name...",
+    "ariaLabel": "Legal prompt input",
+    "error": "Failed to process prompt. Try formatting as \"YYYY/NNNN\" (e.g., 2025/1562)."
+  },
+  "response": {
+    "searchResults": "Search Results",
+    "properties": "Properties",
+    "caseNumber": "Case Number",
+    "table": "Table",
+    "plaintiff": "Plaintiff",
+    "defendant": "Defendant(s)",
+    "judgment": "Judgment",
+    "noResults": "No case details found for your query.",
+    "backToHome": "Back to Home",
+    "view": "View",
+    "hide": "Hide",
+    "case": "Case"
+  }
+}

@@ -1,10 +1,19 @@
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: ReactNode;
+  translationKey?: string;
+  translationParams?: Record<string, any>;
 }
 
-export function Button({ children, ...props }: ButtonProps) {
+export function Button({ children, translationKey, translationParams, ...props }: ButtonProps) {
+  const { t } = useTranslation();
+
+  if (translationKey) {
+    children = t(translationKey, translationParams);
+  }
+
   return (
     <button
       className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-black text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base hover:bg-gray-900 transition-all"

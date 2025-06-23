@@ -1,15 +1,70 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionData } from './app/lib/sessionStorage';
 
+// Define supported locales
+const locales = ['en', 'ar'];
+const defaultLocale = 'en';
+
+/**
+ * Get the preferred locale from the request
+ */
+function getLocale(request: NextRequest): string {
+  // Check if the locale is already in the URL
+  const { pathname } = request.nextUrl;
+  for (const locale of locales) {
+    if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
+      return locale;
+    }
+  }
+
+  // Check for locale in cookie
+  const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
+  if (localeCookie && locales.includes(localeCookie)) {
+    return localeCookie;
+  }
+
+  // Check for locale in Accept-Language header
+  const acceptLanguage = request.headers.get('accept-language');
+  if (acceptLanguage) {
+    const preferredLocale = acceptLanguage
+      .split(',')
+      .map(lang => lang.split(';')[0].trim())
+      .find(lang => locales.includes(lang) || locales.includes(lang.split('-')[0]));
+    
+    if (preferredLocale) {
+      // If we find a match like 'ar-SA', use the base locale 'ar'
+      const baseLocale = preferredLocale.includes('-') ? preferredLocale.split('-')[0] : preferredLocale;
+      if (locales.includes(baseLocale)) {
+        return baseLocale;
+      }
+    }
+  }
+
+  // Default to English
+  return defaultLocale;
+}
+
 /**
  * Kanon middleware
- * Handles request logging, security headers, and basic auth checks
+ * Handles language detection, request logging, security headers, and basic auth checks
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   // Log incoming requests
   console.log(`[${new Date().toISOString()}] ${request.method} ${pathname}`);
+  
+  // Check if the pathname already has a locale
+  const pathnameHasLocale = locales.some(
+    locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+  
+  // Redirect if there is no locale in the pathname
+  if (!pathnameHasLocale && !pathname.startsWith('/api/') && !pathname.startsWith('/_next/')) {
+    const locale = getLocale(request);
+    request.nextUrl.pathname = `/${locale}${pathname === '/' ? '' : pathname}`;
+    return NextResponse.redirect(request.nextUrl);
+  }
   
   // Get response
   const response = NextResponse.next();
