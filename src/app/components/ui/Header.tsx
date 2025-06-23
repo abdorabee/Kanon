@@ -1,9 +1,10 @@
 import { Button } from './Button';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between whitespace-nowrap border-b border-[#363636] px-10 py-3 bg-[#1a1a1a]">
-      <div className="flex items-center gap-4 text-white">
+    <header className="flex items-center justify-between whitespace-nowrap border-b border-[#363636] dark:border-[#363636] border-gray-200 px-10 py-3 bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
+      <div className="flex items-center gap-4 text-gray-900 dark:text-white">
         <div className="size-4">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -22,11 +23,14 @@ export function Header() {
       </div>
       <div className="flex flex-1 justify-end gap-8">
         <div className="flex items-center gap-9">
-          <a href="#" className="text-white text-sm font-medium leading-normal">Product</a>
-          <a href="#" className="text-white text-sm font-medium leading-normal">Pricing</a>
-          <a href="#" className="text-white text-sm font-medium leading-normal">Resources</a>
+          <a href="#" className="text-gray-900 dark:text-white text-sm font-medium leading-normal">Product</a>
+          <a href="#" className="text-gray-900 dark:text-white text-sm font-medium leading-normal">Pricing</a>
+          <a href="#" className="text-gray-900 dark:text-white text-sm font-medium leading-normal">Resources</a>
         </div>
-        <Button>Get started</Button>
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <Button>Get started</Button>
+        </div>
       </div>
     </header>
   );
