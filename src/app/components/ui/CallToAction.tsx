@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from './Button';
 import useTranslation from 'next-translate/useTranslation';
 

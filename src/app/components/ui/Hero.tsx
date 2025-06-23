@@ -1,3 +1,5 @@
+'use client';
+
 import { PromptInput } from './PromptInput';
 import useTranslation from 'next-translate/useTranslation';
 

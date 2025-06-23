@@ -4,16 +4,18 @@ import { Issue } from '@/app/lib/types';
 interface SearchParams {
   case?: string;
   q?: string;
+  lang?: string;
 }
 
 interface Props {
-  searchParams: Promise<SearchParams>;
+  params?: { lang?: string };
+  searchParams?: SearchParams;
 }
 
-export default async function ResponsePage({ searchParams }: Props) {
-  const params = await searchParams;
-  const caseNumber = params.case;
-  const searchTerm = params.q;
+export default async function ResponsePage({ params, searchParams }: Props) {
+  // Handle searchParams safely
+  const caseNumber = searchParams?.case;
+  const searchTerm = searchParams?.q;
   
   // Determine what to display in the prompt area
   const prompt = caseNumber ? `Case Number: ${caseNumber}` : searchTerm || 'No search term provided';

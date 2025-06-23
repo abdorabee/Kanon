@@ -27,6 +27,8 @@
     "description": "Kanon is an AI-powered legal assistant designed to streamline your legal research, document analysis, and case strategy. Experience the future of law with cutting-edge technology."
   },
   "features": {
+    "heading": "Key Features",
+    "description": "Explore the core functionalities that make Kanon an indispensable tool for legal professionals.",
     "search": {
       "title": "Advanced Legal Search",
       "description": "Quickly find relevant cases, statutes, and legal documents with our powerful AI-driven search engine."

@@ -1,9 +1,15 @@
+'use client';
+
 import { Hero } from './components/ui/Hero';
 import { FeatureCard } from './components/ui/FeatureCard';
 import { CallToAction } from './components/ui/CallToAction';
 import { MainLayout } from './components/layout/MainLayout';
+import useTranslation from 'next-translate/useTranslation';
 
+// Define the Home component as a client component
 export default function Home() {
+  const { t } = useTranslation('common');
+  
   return (
     <MainLayout>
       <div className="@container w-full">
@@ -15,29 +21,25 @@ export default function Home() {
         <div className="flex flex-col gap-4 sm:gap-6">
           <div className="flex flex-col gap-2 sm:gap-4">
             <h1 className="text-white text-2xl sm:text-[28px] md:text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:tracking-[-0.033em] max-w-[720px]">
-              Key Features
+              {t('features.heading')}
             </h1>
             <p className="text-white text-sm sm:text-base font-normal leading-normal max-w-[720px]">
-              Explore the core functionalities that make Kanon an indispensable tool for legal
-              professionals.
+              {t('features.description')}
             </p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-3 p-0">
           <FeatureCard
             icon="MagnifyingGlass"
-            title="Advanced Legal Research"
-            description="Quickly access and analyze relevant legal information from a vast database of cases, statutes, and regulations."
+            translationKey="features.search"
           />
           <FeatureCard
             icon="File"
-            title="Document Analysis"
-            description="Efficiently review and extract key insights from legal documents, contracts, and briefs."
+            translationKey="features.analysis"
           />
           <FeatureCard
             icon="PresentationChart"
-            title="Case Strategy"
-            description="Develop effective case strategies with AI-driven insights and predictive analytics."
+            translationKey="features.strategy"
           />
         </div>
       </div>

@@ -1,3 +1,5 @@
+'use client';
+
 import useTranslation from 'next-translate/useTranslation';
 import { ReactNode } from 'react';
 
@@ -6,7 +8,7 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <div className="px-4 sm:px-6 md:px-10 lg:px-20 xl:px-40 flex flex-1 justify-center py-5 @container">
