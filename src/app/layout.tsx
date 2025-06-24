@@ -2,6 +2,7 @@ import './globals.css';
 import { ReactNode } from 'react';
 import Footer from './components/layout/Footer';
 import { Amiri, Noto_Naskh_Arabic } from 'next/font/google';
+import { Header } from './components/ui/Header';
 
 // Configure the fonts
 const amiri = Amiri({
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         />
       </head>
       <body className={`min-h-screen flex flex-col bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] text-white ${amiri.variable} ${notoNaskhArabic.variable}`}>
+        <Header />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
