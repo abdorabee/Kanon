@@ -81,7 +81,7 @@ import { useState } from 'react';
                    />
                  </svg>
                ) : (
-                 <span className="text-xs sm:text-sm md:text-base">Get started</span>
+                 <span className="text-xs sm:text-sm md:text-base">Search</span>
                )}
              </Button>
            </div>
