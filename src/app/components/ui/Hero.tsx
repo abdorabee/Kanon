@@ -2,7 +2,7 @@ import { PromptInput } from './PromptInput';
 
 export function Hero() {
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-3xl mx-auto px-4 py-12 sm:py-16 md:py-20">
+    <div className="flex flex-col items-center justify-center w-full max-w-3xl mx-auto px-4 py-12 sm:py-16 md:py-20 bg-[#F5F5F5]">
       <div className="flex flex-col gap-4 text-center mb-8 sm:mb-10">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333333]">
           Kanon Legal Assistant

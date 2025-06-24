@@ -11,6 +11,11 @@ interface Props {
 }
 
 export default async function ResponsePage({ searchParams }: Props) {
+  // Force white background for the entire page
+  const pageStyle = {
+    background: '#F5F5F5',
+    backgroundColor: '#F5F5F5',
+  };
   const params = await searchParams;
   const caseNumber = params.case;
   const searchTerm = params.q;
