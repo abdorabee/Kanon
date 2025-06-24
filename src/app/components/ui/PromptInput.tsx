@@ -53,7 +53,7 @@ export function PromptInput() {
           </svg>
         </div>
         <input
-          placeholder="Ask a legal question or search for a case... (press Enter to search)"
+          placeholder="Ask a legal question or search for a case"
           className="flex-1 bg-transparent border-0 text-white focus:outline-none focus:ring-0 text-sm px-2"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
