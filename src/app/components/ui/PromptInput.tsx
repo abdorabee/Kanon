@@ -40,8 +40,8 @@ export function PromptInput() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-full">
-      <div className="flex w-full items-stretch rounded-lg border border-gray-700 bg-gray-800 overflow-hidden h-12 sm:h-14">
-        <div className="flex items-center justify-center px-3 text-gray-400">
+      <div className="flex w-full items-stretch rounded-lg border border-[#D3D3D3] bg-white overflow-hidden h-12 sm:h-14 shadow-sm">
+        <div className="flex items-center justify-center px-3 text-[#333333]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -54,7 +54,7 @@ export function PromptInput() {
         </div>
         <input
           placeholder="Ask a legal question or search for a case"
-          className="flex-1 bg-transparent border-0 text-white focus:outline-none focus:ring-0 text-sm px-2"
+          className="flex-1 bg-transparent border-0 text-[#333333] focus:outline-none focus:ring-0 text-sm px-2"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -64,7 +64,7 @@ export function PromptInput() {
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center justify-center px-3 bg-blue-600 hover:bg-blue-700 transition-colors"
+          className="flex items-center justify-center px-3 bg-[#1A3C5E] hover:bg-[#15324e] transition-colors"
         >
           {loading ? (
             <svg
@@ -102,7 +102,7 @@ export function PromptInput() {
         </button>
       </div>
       {error && (
-        <p className="text-red-500 text-xs mt-2">{error}</p>
+        <p className="text-[#BF9D9D] text-xs mt-2">{error}</p>
       )}
     </form>
   );

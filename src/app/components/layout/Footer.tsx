@@ -86,24 +86,24 @@ export default function Footer() {
       <div className="flex max-w-[960px] flex-1 flex-col">
         <div className="flex flex-col gap-6 px-5 py-10 text-center @container">
           <div className="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around">
-            <a href="#" className="text-[#adadad] text-base font-normal leading-normal min-w-40">
+            <a href="#" className="text-[#333333] text-base font-normal leading-normal min-w-40 hover:text-[#1A3C5E]">
               Terms of Service
             </a>
-            <a href="#" className="text-[#adadad] text-base font-normal leading-normal min-w-40">
+            <a href="#" className="text-[#333333] text-base font-normal leading-normal min-w-40 hover:text-[#1A3C5E]">
               Privacy Policy
             </a>
-            <a href="#" className="text-[#adadad] text-base font-normal leading-normal min-w-40">
+            <a href="#" className="text-[#333333] text-base font-normal leading-normal min-w-40 hover:text-[#1A3C5E]">
               Contact Us
             </a>
           </div>
-          <p className="text-[#adadad] text-base font-normal leading-normal">
+          <p className="text-[#333333] text-base font-normal leading-normal">
           ©
           2025 Kanon. All rights reserved.
           </p>
           <div className="flex justify-center">
             <button
               onClick={toggleLanguage}
-              className="text-gray-400 hover:text-white text-[10px] px-2 py-0.5 rounded-sm border border-gray-700 hover:border-gray-500 transition-colors mt-2 inline-block w-8"
+              className="text-[#333333] hover:text-[#1A3C5E] text-[10px] px-2 py-0.5 rounded-sm border border-[#D3D3D3] hover:border-[#A3CCBE] transition-colors mt-2 inline-block w-8"
               aria-label="Toggle language"
             >
               {isClient ? (language === 'en' ? 'AR' : 'EN') : ''}

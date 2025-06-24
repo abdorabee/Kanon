@@ -2,8 +2,8 @@ import { Button } from './Button';
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between whitespace-nowrap border-b border-[#363636] px-10 py-3 bg-[#1a1a1a]">
-      <div className="flex items-center gap-4 text-white">
+    <header className="flex items-center justify-between whitespace-nowrap border-b border-[#D3D3D3] px-10 py-3 bg-white shadow-sm">
+      <div className="flex items-center gap-4 text-[#1A3C5E]">
         <div className="size-4">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -22,9 +22,9 @@ export function Header() {
       </div>
       <div className="flex flex-1 justify-end gap-8">
         <div className="flex items-center gap-9">
-          <a href="#" className="text-white text-sm font-medium leading-normal">Product</a>
-          <a href="#" className="text-white text-sm font-medium leading-normal">Pricing</a>
-          <a href="#" className="text-white text-sm font-medium leading-normal">Resources</a>
+          <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">Product</a>
+          <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">Pricing</a>
+          <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">Resources</a>
         </div>
         <Button>Get started</Button>
       </div>
