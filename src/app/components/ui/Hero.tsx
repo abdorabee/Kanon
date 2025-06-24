@@ -2,23 +2,32 @@ import { PromptInput } from './PromptInput';
 
 export function Hero() {
   return (
-    <div
-      className="min-h-[320px] sm:min-h-[400px] md:min-h-[480px] flex flex-col gap-4 sm:gap-6 bg-cover bg-center bg-no-repeat @container @[480px]:gap-8 @[480px]:rounded-xl items-center justify-center p-3 sm:p-4"
-      style={{
-        backgroundImage:
-          'linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url(/images/background.jpg)',
-      }}
-    >
-      <div className="flex flex-col gap-2 text-center px-2 sm:px-4">
-        <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
-          Revolutionize Your Legal Workflow with Kanon
+    <div className="flex flex-col items-center justify-center w-full max-w-3xl mx-auto px-4 py-12 sm:py-16 md:py-20 bg-[#F5F5F5]">
+      <div className="flex flex-col gap-4 text-center mb-8 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333333]">
+          Kanon Legal Assistant
         </h1>
-        <h2 className="text-white text-xs sm:text-sm font-normal leading-normal @[480px]:text-base">
-          Kanon is an AI-powered legal assistant designed to streamline your legal research, document
-          analysis, and case strategy. Experience the future of law with cutting-edge technology.
-        </h2>
+        <p className="text-sm sm:text-base text-[#333333] max-w-xl mx-auto">
+          Ask questions about cases, analyze legal documents, or get help with research
+        </p>
       </div>
-      <PromptInput />
+      
+      <div className="w-full max-w-2xl">
+        <PromptInput />
+      </div>
+      
+      <div className="flex flex-wrap justify-center gap-4 mt-8 text-xs text-[#333333]">
+        <span>Examples:</span>
+        <button className="px-3 py-1 bg-[#A3CCBE] hover:bg-[#8ebcaa] text-[#1A3C5E] rounded-md transition-colors">
+          Find case 2023/1234
+        </button>
+        <button className="px-3 py-1 bg-[#A3CCBE] hover:bg-[#8ebcaa] text-[#1A3C5E] rounded-md transition-colors">
+          Summarize Smith v. Johnson
+        </button>
+        <button className="px-3 py-1 bg-[#A3CCBE] hover:bg-[#8ebcaa] text-[#1A3C5E] rounded-md transition-colors">
+          Legal implications of contract breach
+        </button>
+      </div>
     </div>
   );
 }

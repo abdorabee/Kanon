@@ -42,11 +42,11 @@ interface FeatureCardProps {
     };
   
     return (
-      <div className="flex flex-1 gap-3 rounded-lg border border-[#4d4d4d] bg-neutral-800 p-4 flex-col">
-        <div className="text-white">{icons[icon]}</div>
+      <div className="flex flex-1 gap-3 rounded-lg border border-[#D3D3D3] bg-white p-4 flex-col shadow-sm">
+        <div className="text-[#1A3C5E]">{icons[icon]}</div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-white text-base font-bold leading-tight">{title}</h2>
-          <p className="text-[#adadad] text-sm font-normal leading-normal">{description}</p>
+          <h2 className="text-[#333333] text-base font-bold leading-tight">{title}</h2>
+          <p className="text-[#333333] text-sm font-normal leading-normal">{description}</p>
         </div>
       </div>
     );
