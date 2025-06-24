@@ -1,7 +1,6 @@
 'use client';
 import { useState, KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from './Button';
 
 export function PromptInput() {
   const [prompt, setPrompt] = useState('');

@@ -21,7 +21,8 @@ interface Translation {
 export default function Footer() {
   const [language, setLanguage] = useState('en');
   const [isClient, setIsClient] = useState(false);
-  const [translations, setTranslations] = useState<Translation>({
+  // Using setTranslations for future use but not using translations directly in this component
+  const [, setTranslations] = useState<Translation>({
     searchResults: 'Search Results',
     caseNumber: 'Case Number',
     table: 'Table',
