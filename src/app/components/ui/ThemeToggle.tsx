@@ -41,8 +41,25 @@ export function ThemeToggle() {
   const toggleTheme = () => {
     console.log('[ThemeToggle] Toggle clicked. Current theme:', theme);
     const newTheme = theme === 'dark' ? 'light' : 'dark';
+    
+    // Update localStorage directly to ensure it's set before reload
+    localStorage.setItem('theme', newTheme);
+    
+    // Apply classes directly to ensure immediate visual change
+    if (newTheme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+    
+    // Set theme in next-themes
     setTheme(newTheme);
     console.log('[ThemeToggle] Set theme to:', newTheme);
+    
+    // Force a page refresh to ensure all styles are applied
+    window.location.reload();
   };
 
   // Don't render anything until mounted to avoid hydration mismatch
