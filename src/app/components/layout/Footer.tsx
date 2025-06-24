@@ -97,14 +97,18 @@ export default function Footer() {
             </a>
           </div>
           <p className="text-[#adadad] text-base font-normal leading-normal">
-            © 2025 Kanon. All rights reserved.
+          ©
+          2025 Kanon. All rights reserved.
           </p>
-          <button
-            onClick={toggleLanguage}
-            className="bg-neutral-800 border border-[#4d4d4d] text-[#e0e0e0] hover:bg-[#3d3d3d] px-6 py-3 text-sm md:text-base rounded-lg shadow-[3px_3px_10px_rgba(0,0,0,0.3),-3px_-3px_10px_rgba(60,60,60,0.2)] mt-4"
-          >
-            {translations.language}: {isClient ? (language === 'en' ? translations.arabic : translations.english) : ''}
-          </button>
+          <div className="flex justify-center">
+            <button
+              onClick={toggleLanguage}
+              className="text-gray-400 hover:text-white text-[10px] px-2 py-0.5 rounded-sm border border-gray-700 hover:border-gray-500 transition-colors mt-2 inline-block w-8"
+              aria-label="Toggle language"
+            >
+              {isClient ? (language === 'en' ? 'AR' : 'EN') : ''}
+            </button>
+          </div>
         </div>
       </div>
     </footer>
