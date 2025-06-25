@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 import { Issue } from '../../lib/types';
-import { getClientTranslation } from '../../lib/translation';
+
 
 interface ResponseDisplayProps {
   prompt: string;
@@ -33,7 +33,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   // We track language state but don't directly use it in rendering
   // It's used in the useEffect for loading translations
   const [, setLanguage] = useState<'en' | 'ar'>('en');
-  const [translations, setTranslations] = useState<Translation>({
+  const [translations] = useState<Translation>({
     searchResults: 'Search Results',
     caseNumber: 'Case Number',
     table: 'Table',
@@ -54,14 +54,14 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
     const storedLanguage = localStorage.getItem('language') || 'en';
     setLanguage(storedLanguage as 'en' | 'ar');
     
-    // Load translations based on the current language
-    getClientTranslation(storedLanguage as 'en' | 'ar', setTranslations);
+    // We're using default translations directly now
+    // No external translation loading
     
     // Listen for storage events to update when language changes in another component
     const handleStorageChange = () => {
       const newLang = localStorage.getItem('language') || 'en';
       setLanguage(newLang as 'en' | 'ar');
-      getClientTranslation(newLang as 'en' | 'ar', setTranslations);
+      // No external translation loading
     };
     
     window.addEventListener('storage', handleStorageChange);
