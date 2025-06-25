@@ -33,7 +33,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   // We track language state but don't directly use it in rendering
   // It's used in the useEffect for loading translations
   const [, setLanguage] = useState<'en' | 'ar'>('en');
-  const [translations, setTranslations] = useState<Translation>({
+  const [translations] = useState<Translation>({
     searchResults: 'Search Results',
     caseNumber: 'Case Number',
     table: 'Table',
