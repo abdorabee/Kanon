@@ -1,0 +1,55 @@
+{
+  "common": {
+    "appName": "Kanon",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "header": {
+    "title": "Kanon",
+    "product": "Product",
+    "pricing": "Pricing",
+    "resources": "Resources",
+    "getStarted": "Get started",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "footer": {
+    "copyright": " 2025 Kanon. All rights reserved.",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy"
+  },
+  "responseDisplay": {
+    "noResponse": "No response available",
+    "copyToClipboard": "Copy to clipboard",
+    "copied": "Copied!",
+    "regenerate": "Regenerate",
+    "searchResults": "Search Results",
+    "caseNumber": "Case Number",
+    "table": "Table",
+    "plaintiff": "Plaintiff",
+    "defendant": "Defendant(s)",
+    "judgment": "Judgment",
+    "noResults": "No case details found for your query.",
+    "backToHome": "Back to Home",
+    "view": "View",
+    "hide": "Hide",
+    "properties": "Properties"
+  },
+  "hero": {
+    "title": "Kanon Legal Assistant",
+    "subtitle": "Ask questions about cases, analyze legal documents, or get help with research",
+    "examples": "Examples:",
+    "example1": "Find case 2023/1234",
+    "example2": "Summarize Smith v. Johnson",
+    "example3": "Legal implications of contract breach"
+  },
+  "promptInput": {
+    "placeholder": "Ask a legal question or search for a case",
+    "error": "Failed to process prompt. Try again or check your input."
+  }
+}
