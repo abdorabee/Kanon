@@ -62,10 +62,10 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({ childr
     const keys = key.split('.');
     
     // Navigate through the translations object
-    let result: any = translations;
+    let result: Record<string, unknown> = translations as Record<string, unknown>;
     for (const k of keys) {
-      if (result && result[k] !== undefined) {
-        result = result[k];
+      if (result && typeof result === 'object' && k in result) {
+        result = result[k] as Record<string, unknown>;
       } else {
         // Return the key if translation not found
         console.log(`Translation key not found: ${key}`);
@@ -73,7 +73,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({ childr
       }
     }
     
-    return result;
+    return String(result);
   };
 
   return (
