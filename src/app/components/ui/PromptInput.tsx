@@ -1,12 +1,14 @@
 'use client';
 import { useState, KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '../../context/TranslationContext';
 
 export function PromptInput() {
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -24,7 +26,7 @@ export function PromptInput() {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Prompt submission error:', errorMessage);
-      setError(`Failed to process prompt. Try again or check your input.`);
+      setError(t('promptInput.error'));
     } finally {
       setLoading(false);
     }
@@ -53,7 +55,7 @@ export function PromptInput() {
           </svg>
         </div>
         <input
-          placeholder="Ask a legal question or search for a case"
+          placeholder={t('promptInput.placeholder')}
           className="flex-1 bg-transparent border-0 text-[#333333] focus:outline-none focus:ring-0 text-xs sm:text-sm px-1 sm:px-2"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
