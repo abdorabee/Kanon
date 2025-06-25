@@ -1,8 +1,12 @@
+'use client';
 import { Button } from './Button';
+import { useState } from 'react';
 
 export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <header className="flex items-center justify-between whitespace-nowrap border-b border-[#D3D3D3] px-10 py-3 bg-white shadow-sm">
+    <header className="flex items-center justify-between whitespace-nowrap border-b border-[#D3D3D3] px-4 sm:px-6 md:px-10 py-3 bg-white shadow-sm relative">
       <div className="flex items-center gap-4 text-[#1A3C5E]">
         <div className="size-4">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +24,25 @@ export function Header() {
         </div>
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">Kanon</h2>
       </div>
-      <div className="flex flex-1 justify-end gap-8">
+      
+      {/* Mobile menu button */}
+      <button 
+        className="md:hidden flex items-center justify-center p-2 rounded-md text-[#1A3C5E] hover:bg-gray-100"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        aria-expanded={mobileMenuOpen}
+        aria-label="Toggle menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+          {mobileMenuOpen ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+      
+      {/* Desktop navigation */}
+      <div className="hidden md:flex flex-1 justify-end gap-8">
         <div className="flex items-center gap-9">
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">Product</a>
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">Pricing</a>
@@ -28,6 +50,20 @@ export function Header() {
         </div>
         <Button>Get started</Button>
       </div>
+      
+      {/* Mobile menu, show/hide based on menu state */}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-[#D3D3D3] shadow-md z-10">
+          <div className="flex flex-col px-4 py-2 space-y-2">
+            <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">Product</a>
+            <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">Pricing</a>
+            <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">Resources</a>
+            <div className="py-2">
+              <Button fullWidth>Get started</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
