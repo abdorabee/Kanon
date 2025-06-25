@@ -22,27 +22,26 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script
+          id="language-direction-script"
           dangerouslySetInnerHTML={{
             __html: `
-              document.addEventListener('DOMContentLoaded', () => {
-                const lang = localStorage.getItem('language') || 'en';
-                const html = document.documentElement;
-                html.lang = lang;
-                html.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                if (lang === 'ar') {
-                  html.classList.add('ar');
-                } else {
-                  html.classList.remove('ar');
-                }
-              });
+              (function() {
+                // Get language from localStorage or default to English
+                const language = localStorage.getItem('language') || 'en';
+                
+                // Set dir attribute on html tag based on language
+                document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = language;
+              })();
             `,
           }}
         />
       </head>
-      <body className={`min-h-screen flex flex-col bg-[#F5F5F5] text-[#333333] ${amiri.variable} ${notoNaskhArabic.variable}`}>
+      <body className={`min-h-screen flex flex-col bg-[#F5F5F5] text-[#333333] antialiased overflow-x-hidden ${amiri.variable} ${notoNaskhArabic.variable}`}>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 w-full max-w-full">{children}</main>
         <Footer />
       </body>
     </html>

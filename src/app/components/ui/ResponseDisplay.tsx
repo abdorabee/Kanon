@@ -78,19 +78,19 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="max-w-[1000px] w-full flex flex-col gap-4 sm:gap-6"
+        className="max-w-[1000px] w-full flex flex-col gap-3 sm:gap-4 md:gap-6"
       >
         {/* Search Summary Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white border border-[#D3D3D3] rounded-xl p-3 sm:p-4 shadow-sm"
+          className="bg-white border border-[#D3D3D3] rounded-xl p-2 sm:p-3 md:p-4 shadow-sm"
         >
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#333333] tracking-wide">
-            {translations.searchResults}: <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-sm sm:text-base">{issues.length}</span>
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#333333] tracking-wide">
+            {translations.searchResults}: <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-xs sm:text-sm">{issues.length}</span>
           </h1>
-          <p className="text-[#333333] text-xs sm:text-sm md:text-base mt-2">{prompt}</p>
+          <p className="text-[#333333] text-xs sm:text-sm mt-2">{prompt}</p>
         </motion.div>
 
         {/* Issues Table */}
@@ -108,9 +108,55 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="overflow-x-auto w-full bg-white border border-[#D3D3D3] rounded-xl p-2 sm:p-4 shadow-sm"
+            className="bg-white border border-[#D3D3D3] rounded-xl overflow-x-auto shadow-sm"
           >
-            <table className="w-full border-collapse min-w-[640px]">
+            {/* Mobile view - card style for small screens */}
+            <div className="block sm:hidden">
+              {issues.map((issue, index) => (
+                <div key={issue._id} className="border-b border-[#D3D3D3] p-3">
+                  <h3 className="font-semibold text-sm text-[#1A3C5E] mb-2">Case {index + 1}</h3>
+                  
+                  <div className="grid grid-cols-2 gap-1 text-xs">
+                    <div className="font-medium">{translations.caseNumber}:</div>
+                    <div>{issue.case_number}</div>
+                    
+                    <div className="font-medium">{translations.table}:</div>
+                    <div>{issue.table_name}</div>
+                    
+                    <div className="font-medium">{translations.plaintiff}:</div>
+                    <div>{issue.plaintiff_name}</div>
+                    
+                    <div className="font-medium">{translations.defendant}:</div>
+                    <div className="truncate">{issue.defendant_names.join(', ')}</div>
+                  </div>
+                  
+                  <div className="mt-2">
+                    <button
+                      onClick={() => toggleIssueDetails(issue._id)}
+                      className="text-[#1A3C5E] hover:text-[#A3CCBE] text-xs font-medium underline"
+                    >
+                      {expandedIssues[issue._id] ? translations.hide : translations.view} {translations.judgment}
+                    </button>
+                    <AnimatePresence>
+                      {expandedIssues[issue._id] && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                          className="mt-2 p-2 bg-[#F0F0F0] rounded text-xs text-[#333333]"
+                        >
+                          {issue.judgment_or_decision_info}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Desktop view - table for larger screens */}
+            <table className="hidden sm:table w-full text-left">
               <thead>
                 <tr className="border-b border-[#D3D3D3]">
                   <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#1A3C5E] text-left">Properties</th>

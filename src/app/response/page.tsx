@@ -58,5 +58,11 @@ export default async function ResponsePage({ searchParams }: Props) {
     console.error('Error fetching issues:', error);
   }
 
-  return <ResponseDisplay prompt={prompt} issues={issues} />;
+  // Add metadata for better mobile display
+  return (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <ResponseDisplay prompt={prompt} issues={issues} />
+    </>
+  );
 }
