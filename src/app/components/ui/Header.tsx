@@ -3,11 +3,11 @@ import { Button } from './Button';
 import { useState } from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from '../../context/TranslationContext';
-import { AboutOverlay } from './AboutOverlay';
+import { useLayout } from '../../context/LayoutContext';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
+  const { isAboutOpen, setIsAboutOpen } = useLayout();
   const { t } = useTranslation();
 
   return (
@@ -52,7 +52,7 @@ export function Header() {
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">{t('header.product')}</a>
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">{t('header.pricing')}</a>
           <button 
-            onClick={() => setAboutOpen(true)} 
+            onClick={() => setIsAboutOpen(true)} 
             className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal"
           >
             {t('header.about')}
@@ -68,7 +68,7 @@ export function Header() {
             <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">{t('header.product')}</a>
             <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">{t('header.pricing')}</a>
             <button 
-              onClick={() => setAboutOpen(true)} 
+              onClick={() => setIsAboutOpen(true)} 
               className="text-left text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100 w-full"
             >
               {t('header.about')}
@@ -80,8 +80,7 @@ export function Header() {
         </div>
       )}
       
-      {/* About Overlay */}
-      <AboutOverlay isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />
+      {/* About Overlay is now handled in page.tsx */}
     </header>
   );
 }
