@@ -1,23 +1,88 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { storeSessionData, generateSessionId } from '@/app/lib/sessionStorage';
 
+// Function to get a fresh token by logging in
+async function getAccessToken() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+  const loginUrl = `${apiUrl}/token`;
+  
+  try {
+    console.log('Attempting to get a fresh token...');
+    
+    // Default credentials
+    const username = 'admin';
+    const password = 'admin_kanony_MEDA';
+    
+    // Form data for login
+    const formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('password', password);
+    
+    const response = await fetch(loginUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'accept': 'application/json'
+      },
+      body: formData.toString(),
+      cache: 'no-store'
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Login failed: ${response.status} ${response.statusText}`);
+      console.error('Error details:', errorText);
+      return null;
+    }
+    
+    const data = await response.json();
+    console.log('Successfully obtained new access token');
+    return data.access_token;
+  } catch (error) {
+    console.error('Error during login:', error);
+    return null;
+  }
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  // Use the hosted API URL instead of local
-  const apiUrl = 'https://api.kanony.xyz';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
   const backendUrl = `${apiUrl}/issues/?${searchParams.toString()}`;
+  
+  // Debug environment variables
+  console.log('API Route - Environment variables:');
+  console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || 'not set');
+  console.log('Fetching from:', backendUrl);
 
   try {
+    // Get a fresh token by logging in
+    const token = await getAccessToken();
+    
+    if (!token) {
+      return NextResponse.json(
+        { detail: 'Failed to obtain authentication token' },
+        { status: 500 }
+      );
+    }
+    
+    console.log('API Route: Using fresh Bearer token');
+    
     const response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDk0MDA2MX0.Y_upBnwo5_mRTWfa1y6PUJoSUJ0cS8EKs4PmeCcdpjg'
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
+      // Don't use cache to ensure fresh requests
+      cache: 'no-store',
+      // Add credentials inclusion
+      credentials: 'include',
     });
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`API Error: ${response.status} ${response.statusText}`);
+      console.error('Error details:', errorText);
       return NextResponse.json({ detail: errorText }, { status: response.status });
     }
 
