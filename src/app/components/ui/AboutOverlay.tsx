@@ -19,16 +19,16 @@ export function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col items-center justify-start w-full max-w-3xl mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-10 bg-white rounded-lg shadow-md"
+      className="flex flex-col items-center justify-start w-full max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-10 bg-white rounded-lg shadow-md"
     >
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
-        className={`w-full ${language === 'ar' ? 'rtl' : 'ltr'}`}
+        className={`w-full ${language === 'ar' ? 'rtl text-right' : 'ltr text-left'}`}
       >
-        <div className="flex justify-between items-center mb-4 sm:mb-5">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{t('about.title')}</h1>
+        <div className="flex justify-between items-center mb-4 sm:mb-5 w-full">
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 flex-1 leading-tight">{t('about.title')}</h1>
           <button 
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 transition-colors p-1 rounded-full hover:bg-gray-100"
@@ -48,8 +48,8 @@ export function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
           </div>
           
           <div>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">{t('about.features')}</h2>
-            <ul className="list-disc list-outside ml-5 space-y-2 sm:space-y-3 text-sm sm:text-base md:text-lg text-gray-700">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-3">{t('about.features')}</h2>
+            <ul className={`list-disc list-outside space-y-1.5 sm:space-y-2 text-sm sm:text-base md:text-lg text-gray-700 ${language === 'ar' ? 'mr-5 pr-2' : 'ml-5 pl-2'}`}>
               <li>{t('about.feature1')}</li>
               <li>{t('about.feature2')}</li>
               <li>{t('about.feature3')}</li>
@@ -59,15 +59,15 @@ export function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
           </div>
           
           <div>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">{t('about.privacy')}</h2>
-            <div className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed space-y-2 sm:space-y-3">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-2 sm:mb-3">{t('about.privacy')}</h2>
+            <div className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed space-y-2 sm:space-y-3 ${language === 'ar' ? 'text-justify' : ''}">
               <p>{t('about.privacyText1')}</p>
               <p>{t('about.privacyText2')}</p>
             </div>
           </div>
         </div>
         
-        <div className="mt-6 sm:mt-8 md:mt-10 flex justify-center">
+        <div className="mt-5 sm:mt-6 md:mt-8 flex justify-center">
           <button
             onClick={onClose}
             className="px-4 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-base bg-black text-white rounded hover:bg-gray-800 transition-colors"
