@@ -52,7 +52,8 @@
   },
   "about": {
     "title": "Family Court Rulings Search System",
-    "description": "This system provides comprehensive search capabilities in the family court rulings database and judicial history. Users can search using Arabic names and access detailed case information while ensuring privacy protection.",
+    "description1": "This system provides comprehensive search capabilities in the family court rulings database and judicial history.",
+    "description2": "Users can search using Arabic names and access detailed case information while ensuring privacy protection.",
     "features": "Key Features:",
     "feature1": "Arabic name search with right-to-left text support",
     "feature2": "Advanced search with filtering options",
@@ -60,7 +61,8 @@
     "feature4": "Bilingual interface (Arabic and English)",
     "feature5": "Privacy protection through name anonymization",
     "privacy": "Privacy and Security:",
-    "privacyText": "All names and personal information are access-restricted and anonymized to ensure the privacy protection of the parties involved.",
+    "privacyText1": "All names and personal information are access-restricted and anonymized",
+    "privacyText2": "to ensure the privacy protection of the parties involved.",
     "close": "Close"
   }
 }

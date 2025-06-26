@@ -27,7 +27,7 @@ export function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`bg-white rounded-lg shadow-xl max-w-xl w-full p-5 md:p-6 ${language === 'ar' ? 'rtl' : 'ltr'} overflow-y-auto max-h-[85vh]`}
+        className={`bg-white rounded-lg shadow-xl max-w-4xl w-full p-5 md:p-8 ${language === 'ar' ? 'rtl' : 'ltr'} overflow-y-auto max-h-[85vh]`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-start mb-4 md:mb-6">
@@ -44,14 +44,15 @@ export function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
           </button>
         </div>
         
-        <div className="space-y-3 md:space-y-4">
-          <p className="text-sm text-gray-700 leading-relaxed">
-            {t('about.description')}
-          </p>
+        <div className="space-y-4 md:space-y-6">
+          <div className="text-base text-gray-700 leading-relaxed space-y-2">
+            <p>{t('about.description1')}</p>
+            <p>{t('about.description2')}</p>
+          </div>
           
           <div>
-            <h3 className="text-base font-semibold text-gray-900 mb-1">{t('about.features')}</h3>
-            <ul className="list-disc list-outside ml-4 space-y-1 text-sm text-gray-700">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">{t('about.features')}</h3>
+            <ul className="list-disc list-outside ml-6 space-y-2 md:space-y-3 text-base text-gray-700">
               <li>{t('about.feature1')}</li>
               <li>{t('about.feature2')}</li>
               <li>{t('about.feature3')}</li>
@@ -61,17 +62,18 @@ export function AboutOverlay({ isOpen, onClose }: AboutOverlayProps) {
           </div>
           
           <div>
-            <h3 className="text-base font-semibold text-gray-900 mb-1">{t('about.privacy')}</h3>
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {t('about.privacyText')}
-            </p>
+            <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">{t('about.privacy')}</h3>
+            <div className="text-base text-gray-700 leading-relaxed space-y-2">
+              <p>{t('about.privacyText1')}</p>
+              <p>{t('about.privacyText2')}</p>
+            </div>
           </div>
         </div>
         
-        <div className="mt-4 flex justify-end">
+        <div className="mt-6 md:mt-8 flex justify-end">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 text-sm bg-black text-white rounded hover:bg-gray-800 transition-colors"
+            className="px-5 py-2.5 text-base bg-black text-white rounded hover:bg-gray-800 transition-colors"
           >
             {t('about.close')}
           </button>
