@@ -52,7 +52,6 @@ export function Header() {
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">{t('header.resources')}</a>
           <LanguageSwitcher />
         </div>
-        <Button>{t('header.getStarted')}</Button>
       </div>
       
       {/* Mobile menu, show/hide based on menu state */}

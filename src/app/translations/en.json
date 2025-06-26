@@ -42,15 +42,15 @@
     "properties": "Properties"
   },
   "hero": {
-    "title": "Kanon Legal Assistant",
-    "subtitle": "Ask questions about cases, analyze legal documents, or get help with research",
-    "examples": "Examples:",
-    "example1": "Find case 2023/1234",
-    "example2": "Summarize Smith v. Johnson",
-    "example3": "Legal implications of contract breach"
+    "title": "Family Court Rulings",
+   "subtitle": "Search a comprehensive database of family court rulings and history",
+   "examples": "Examples:",
+   "example1": "Search for case 2025/1534",
+   "example2": "Mohammed Ahmed Mahmoud",
+   "example3": "Legal implications of contract breach"
   },
   "promptInput": {
-    "placeholder": "Ask a legal question or search for a case",
-    "error": "Failed to process prompt. Try again or check your input."
+     "placeholder": "Search by name in Arabic",
+   "error": "Failed to process request. Please try again or check your input."
   }
 }
