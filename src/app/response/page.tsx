@@ -10,6 +10,49 @@ interface Props {
   searchParams: Promise<SearchParams>;
 }
 
+// Function to get a fresh token by logging in
+async function getAccessToken() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+  const loginUrl = `${apiUrl}/token`;
+  
+  try {
+    console.log('Attempting to get a fresh token...');
+    
+    // Default credentials
+    const username = 'admin';
+    const password = 'admin_kanony_MEDA';
+    
+    // Form data for login
+    const formData = new URLSearchParams();
+    formData.append('username', username);
+    formData.append('password', password);
+    
+    const response = await fetch(loginUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'accept': 'application/json'
+      },
+      body: formData.toString(),
+      cache: 'no-store'
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Login failed: ${response.status} ${response.statusText}`);
+      console.error('Error details:', errorText);
+      return null;
+    }
+    
+    const data = await response.json();
+    console.log('Successfully obtained new access token');
+    return data.access_token;
+  } catch (error) {
+    console.error('Error during login:', error);
+    return null;
+  }
+}
+
 export default async function ResponsePage({ searchParams }: Props) {
   const params = await searchParams;
   const caseNumber = params.case;
@@ -26,7 +69,6 @@ export default async function ResponsePage({ searchParams }: Props) {
     console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || 'not set');
     console.log('API_TOKEN present:', process.env.API_TOKEN ? 'yes (first 5 chars: ' + process.env.API_TOKEN?.substring(0, 5) + '...)' : 'no');
     
-    // Build the API query based on the URL parameters
     const query = new URLSearchParams({
       skip: '0',
       limit: '10',
@@ -39,15 +81,18 @@ export default async function ResponsePage({ searchParams }: Props) {
       query.append('search', searchTerm);
     }
     
-    // Fetch the issues data directly from the hosted backend API
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
     const requestUrl = `${apiUrl}/issues/?${query.toString()}`;
     console.log('Fetching from:', requestUrl);
     
-    // Use the correct token from the curl example
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDk0NDEzM30.hNUP35v6siWStuHdXY4WPaF__Rd36C9ImB_tQOoMaHI';
+    // Get a fresh token by logging in
+    const token = await getAccessToken();
     
-    console.log('Using Bearer token authentication with correct token');
+    if (!token) {
+      throw new Error('Failed to obtain authentication token');
+    }
+    
+    console.log('Using fresh Bearer token for authentication');
     
     const response = await fetch(requestUrl, {
       method: 'GET',
@@ -55,7 +100,10 @@ export default async function ResponsePage({ searchParams }: Props) {
         'accept': 'application/json',
         'Authorization': `Bearer ${token}`
       },
+      // Don't use cache to ensure fresh requests
       cache: 'no-store',
+      // Add credentials inclusion
+      credentials: 'include',
     });
     
     if (response.ok) {
