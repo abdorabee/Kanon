@@ -21,6 +21,11 @@ export default async function ResponsePage({ searchParams }: Props) {
   let issues: Issue[] = [];
   
   try {
+    // Debug environment variables
+    console.log('Response Page - Environment variables:');
+    console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || 'not set');
+    console.log('API_TOKEN present:', process.env.API_TOKEN ? 'yes (first 5 chars: ' + process.env.API_TOKEN?.substring(0, 5) + '...)' : 'no');
+    
     // Build the API query based on the URL parameters
     const query = new URLSearchParams({
       skip: '0',
@@ -35,25 +40,40 @@ export default async function ResponsePage({ searchParams }: Props) {
     }
     
     // Fetch the issues data directly from the hosted backend API
-    const apiUrl = 'https://api.kanony.xyz';
-    const response = await fetch(`${apiUrl}/issues/?${query.toString()}`, {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+    const requestUrl = `${apiUrl}/issues/?${query.toString()}`;
+    console.log('Fetching from:', requestUrl);
+    
+    // Use the correct token from the curl example
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDk0NDEzM30.hNUP35v6siWStuHdXY4WPaF__Rd36C9ImB_tQOoMaHI';
+    
+    console.log('Using Bearer token authentication with correct token');
+    
+    const response = await fetch(requestUrl, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDk0MDA2MX0.Y_upBnwo5_mRTWfa1y6PUJoSUJ0cS8EKs4PmeCcdpjg'
+        'accept': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       cache: 'no-store',
     });
     
-    if (!response.ok) {
-      console.error('Failed to fetch issues:', response.statusText);
-    } else {
+    if (response.ok) {
       const data = await response.json();
+      console.log('API request succeeded');
       if (Array.isArray(data)) {
         issues = data;
+        console.log(`Found ${data.length} issues`);
+      } else if (data && data.data && Array.isArray(data.data)) {
+        issues = data.data;
+        console.log(`Found ${data.data.length} issues (nested in data property)`);
       } else {
         console.error('Unexpected response format:', data);
       }
+    } else {
+      const errorText = await response.text().catch(() => 'No error text available');
+      console.error(`Failed to fetch issues: ${response.status} ${response.statusText}`);
+      console.error('Error details:', errorText);
     }
   } catch (error) {
     console.error('Error fetching issues:', error);
