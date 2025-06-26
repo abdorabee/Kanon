@@ -3,9 +3,11 @@ import { Button } from './Button';
 import { useState } from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from '../../context/TranslationContext';
+import { AboutOverlay } from './AboutOverlay';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const { t } = useTranslation();
 
   return (
@@ -49,7 +51,12 @@ export function Header() {
         <div className="flex items-center gap-9">
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">{t('header.product')}</a>
           <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">{t('header.pricing')}</a>
-          <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal">{t('header.resources')}</a>
+          <button 
+            onClick={() => setAboutOpen(true)} 
+            className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium leading-normal"
+          >
+            {t('header.about')}
+          </button>
           <LanguageSwitcher />
         </div>
       </div>
@@ -60,13 +67,21 @@ export function Header() {
           <div className="flex flex-col px-4 py-2 space-y-2">
             <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">{t('header.product')}</a>
             <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">{t('header.pricing')}</a>
-            <a href="#" className="text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100">{t('header.resources')}</a>
+            <button 
+              onClick={() => setAboutOpen(true)} 
+              className="text-left text-[#333333] hover:text-[#1A3C5E] text-sm font-medium py-2 border-b border-gray-100 w-full"
+            >
+              {t('header.about')}
+            </button>
             <div className="py-2 border-b border-gray-100">
               <LanguageSwitcher />
             </div>
           </div>
         </div>
       )}
+      
+      {/* About Overlay */}
+      <AboutOverlay isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />
     </header>
   );
 }

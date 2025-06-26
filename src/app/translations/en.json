@@ -12,9 +12,6 @@
     "title": "Kanon",
     "product": "Product",
     "pricing": "Pricing",
-    "resources": "Resources",
-    "getStarted": "Get started",
-    "home": "Home",
     "about": "About",
     "contact": "Contact"
   },
@@ -52,5 +49,18 @@
   "promptInput": {
      "placeholder": "Search by name in Arabic",
    "error": "Failed to process request. Please try again or check your input."
+  },
+  "about": {
+    "title": "Family Court Rulings Search System",
+    "description": "This system provides comprehensive search capabilities in the family court rulings database and judicial history. Users can search using Arabic names and access detailed case information while ensuring privacy protection.",
+    "features": "Key Features:",
+    "feature1": "Arabic name search with right-to-left text support",
+    "feature2": "Advanced search with filtering options",
+    "feature3": "Comprehensive case details display",
+    "feature4": "Bilingual interface (Arabic and English)",
+    "feature5": "Privacy protection through name anonymization",
+    "privacy": "Privacy and Security:",
+    "privacyText": "All names and personal information are access-restricted and anonymized to ensure the privacy protection of the parties involved.",
+    "close": "Close"
   }
 }
