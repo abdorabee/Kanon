@@ -3,7 +3,8 @@ import { storeSessionData, generateSessionId } from '@/app/lib/sessionStorage';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+  // Use the hosted API URL instead of local
+  const apiUrl = 'https://api.kanony.xyz';
   const backendUrl = `${apiUrl}/issues/?${searchParams.toString()}`;
 
   try {
@@ -11,6 +12,7 @@ export async function GET(request: NextRequest) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDk0MDA2MX0.Y_upBnwo5_mRTWfa1y6PUJoSUJ0cS8EKs4PmeCcdpjg'
       },
     });
 

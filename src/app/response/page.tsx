@@ -34,12 +34,13 @@ export default async function ResponsePage({ searchParams }: Props) {
       query.append('search', searchTerm);
     }
     
-    // Fetch the issues data directly from the backend API
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+    // Fetch the issues data directly from the hosted backend API
+    const apiUrl = 'https://api.kanony.xyz';
     const response = await fetch(`${apiUrl}/issues/?${query.toString()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc1MDk0MDA2MX0.Y_upBnwo5_mRTWfa1y6PUJoSUJ0cS8EKs4PmeCcdpjg'
       },
       cache: 'no-store',
     });
