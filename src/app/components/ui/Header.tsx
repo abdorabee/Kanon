@@ -1,5 +1,4 @@
 'use client';
-import { Button } from './Button';
 import { useState } from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from '../../context/TranslationContext';
@@ -7,7 +6,7 @@ import { useLayout } from '../../context/LayoutContext';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAboutOpen, setIsAboutOpen } = useLayout();
+  const { setIsAboutOpen } = useLayout();
   const { t } = useTranslation();
 
   return (
