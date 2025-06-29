@@ -5,6 +5,7 @@ import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 import { Issue } from '../../lib/types';
 import { useTranslation } from '../../context/TranslationContext';
+import { useCaseStore } from '../../lib/store';
 
 
 interface ResponseDisplayProps {
@@ -19,8 +20,18 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const [expandedIssues, setExpandedIssues] = useState<{ [key: string]: boolean }>({});
   const { t } = useTranslation();
 
-  const toggleIssueDetails = (issueId: string) => {
+  const toggleIssueDetails = (issueId: string, event?: React.MouseEvent) => {
+    // If event exists, stop propagation to prevent navigation when clicking the toggle button
+    if (event) {
+      event.stopPropagation();
+    }
     setExpandedIssues((prev) => ({ ...prev, [issueId]: !prev[issueId] }));
+  };
+
+  const navigateToCase = (issue: Issue) => {
+    // Store the selected case in the global store
+    useCaseStore.getState().setSelectedCase(issue);
+    router.push(`/case/${issue._id}`);
   };
 
   return (
@@ -64,7 +75,11 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
             {/* Mobile view - card style for small screens */}
             <div className="block sm:hidden">
               {issues.map((issue, index) => (
-                <div key={issue._id} className="border-b border-[#D3D3D3] p-3">
+                <div 
+                  key={issue._id} 
+                  className="border-b border-[#D3D3D3] p-3 cursor-pointer hover:bg-[#F0F0F0] transition-colors"
+                  onClick={() => navigateToCase(issue)}
+                >
                   <h3 className="font-semibold text-sm text-[#1A3C5E] mb-2">Case {index + 1}</h3>
                   
                   <div className="grid grid-cols-2 gap-1 text-xs">
@@ -83,7 +98,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                   
                   <div className="mt-2">
                     <button
-                      onClick={() => toggleIssueDetails(issue._id)}
+                      onClick={(e) => toggleIssueDetails(issue._id, e)}
                       className="text-[#1A3C5E] hover:text-[#A3CCBE] text-xs font-medium underline"
                     >
                       {expandedIssues[issue._id] ? t('responseDisplay.hide') : t('responseDisplay.view')} {t('responseDisplay.judgment')}
@@ -122,7 +137,11 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
               <tbody>
                 {/* Each row now represents a case */}
                 {issues.map((issue, index) => (
-                  <tr key={issue._id} className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors">
+                  <tr 
+                    key={issue._id} 
+                    className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors cursor-pointer"
+                    onClick={() => navigateToCase(issue)}
+                  >
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#333333] text-left">Case {index + 1}</th>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.case_number}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.table_name}</td>
@@ -130,7 +149,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center truncate max-w-[120px]" title={issue.defendant_names.join(', ')}>{issue.defendant_names.join(', ')}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-center">
                       <button
-                        onClick={() => toggleIssueDetails(issue._id)}
+                        onClick={(e) => toggleIssueDetails(issue._id, e)}
                         className="text-[#1A3C5E] hover:text-[#A3CCBE] text-xs sm:text-sm md:text-base font-medium underline"
                       >
                         {expandedIssues[issue._id] ? t('responseDisplay.hide') : t('responseDisplay.view')}
