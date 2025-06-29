@@ -112,7 +112,7 @@ export default function CaseDetailsPage() {
           className="flex justify-center"
         >
           <Button onClick={() => router.back()}>
-            {t('responseDisplay.back') || 'Back'}
+            {t('responseDisplay.back')}
           </Button>
         </motion.div>
       </div>
