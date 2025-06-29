@@ -6,7 +6,8 @@
     "save": "حفظ",
     "loading": "جاري التحميل...",
     "error": "خطأ",
-    "success": "نجاح"
+    "success": "نجاح",
+    "createdAt": "تاريخ الإنشاء"
   },
   "header": {
     "title": "قانون",

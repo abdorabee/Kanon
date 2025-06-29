@@ -96,7 +96,7 @@ export default function CaseDetailsPage() {
             
             <div className="md:col-span-2">
               <h2 className="text-lg font-semibold text-[#1A3C5E] mb-2">
-                {t('createdAt') || 'Created At'}
+                {t('common.createdAt')}
               </h2>
               <p className="text-[#333333]">
                 {new Date(selectedCase.created_at).toLocaleDateString()} {new Date(selectedCase.created_at).toLocaleTimeString()}
