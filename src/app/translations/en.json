@@ -38,7 +38,8 @@
     "view": "View",
     "hide": "Hide",
     "properties": "Properties",
-    "back": "Back"
+    "back": "Back",
+    "caseDetails": "Case Details"
   },
   "hero": {
     "title": "Family Court Rulings",

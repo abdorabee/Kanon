@@ -41,7 +41,7 @@ export default function CaseDetailsPage() {
           className="bg-white border border-[#D3D3D3] rounded-xl p-4 shadow-sm mb-6"
         >
           <h1 className="text-2xl md:text-3xl font-bold text-[#1A3C5E] mb-2">
-            {t('caseDetails') || 'Case Details'}
+            {t('responseDisplay.caseDetails')}
           </h1>
           <div className="flex items-center">
             <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-xs">
