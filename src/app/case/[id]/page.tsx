@@ -1,15 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Issue } from '@/app/lib/types';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/app/components/ui/Button';
 import { useTranslation } from '@/app/context/TranslationContext';
 import { useCaseStore } from '@/app/lib/store';
 
 export default function CaseDetailsPage() {
-  const params = useParams();
   const router = useRouter();
   const { t } = useTranslation();
   const { selectedCase } = useCaseStore();
