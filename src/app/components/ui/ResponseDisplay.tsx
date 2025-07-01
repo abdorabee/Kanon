@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 import { Issue } from '../../lib/types';
@@ -18,6 +18,8 @@ interface ResponseDisplayProps {
 export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const router = useRouter();
   const [expandedIssues, setExpandedIssues] = useState<{ [key: string]: boolean }>({});
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc'); // Default to newest first
+  const [sortField, setSortField] = useState<'date' | 'caseNumber'>('date'); // Default to sorting by date
   const { t } = useTranslation();
 
   const toggleIssueDetails = (issueId: string, event?: React.MouseEvent) => {
@@ -34,6 +36,32 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
     router.push(`/case/${issue._id}`);
   };
 
+  // Toggle sort direction between ascending and descending
+  const toggleSortDirection = () => {
+    setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+  };
+
+  // Change sort field between date and case number
+  const changeSortField = (field: 'date' | 'caseNumber') => {
+    setSortField(field);
+  };
+
+  // Sort issues by the selected field and direction
+  const sortedIssues = useMemo(() => {
+    return [...issues].sort((a, b) => {
+      if (sortField === 'date') {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
+        return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+      } else {
+        // Extract numeric part from case numbers for proper numeric sorting
+        const caseNumA = parseInt(a.case_number.replace(/\D/g, '')) || 0;
+        const caseNumB = parseInt(b.case_number.replace(/\D/g, '')) || 0;
+        return sortDirection === 'asc' ? caseNumA - caseNumB : caseNumB - caseNumA;
+      }
+    });
+  }, [issues, sortDirection, sortField]);
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#F5F5F5] text-[#333333] p-2 sm:p-4 py-6 sm:py-8 @container">
       <motion.div
@@ -49,9 +77,49 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="bg-white border border-[#D3D3D3] rounded-xl p-2 sm:p-3 md:p-4 shadow-sm"
         >
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#333333] tracking-wide">
-            {t('responseDisplay.searchResults')}: <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-xs sm:text-sm">{issues.length}</span>
-          </h1>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#333333] tracking-wide">
+              {t('responseDisplay.searchResults')}: <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-xs sm:text-sm">{issues.length}</span>
+            </h1>
+            {issues.length > 1 && (
+              <div className="mt-2 sm:mt-0 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <div className="flex items-center">
+                  <button 
+                    onClick={() => changeSortField('date')}
+                    className={`px-2 py-1 text-xs sm:text-sm rounded-l-md ${sortField === 'date' ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 text-[#333333]'} transition-colors`}
+                  >
+                    {t('responseDisplay.sortByDate')}
+                  </button>
+                  <button 
+                    onClick={() => changeSortField('caseNumber')}
+                    className={`px-2 py-1 text-xs sm:text-sm rounded-r-md ${sortField === 'caseNumber' ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 text-[#333333]'} transition-colors`}
+                  >
+                    {t('responseDisplay.sortByCaseNumber')}
+                  </button>
+                </div>
+                <button 
+                  onClick={toggleSortDirection}
+                  className="flex items-center text-xs sm:text-sm text-[#1A3C5E] hover:text-[#A3CCBE] transition-colors"
+                >
+                  {sortDirection === 'asc' ? (
+                    <>
+                      <span className="mr-1">{t('responseDisplay.ascending')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      <span className="mr-1">{t('responseDisplay.descending')}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                      </svg>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
           <p className="text-[#333333] text-xs sm:text-sm mt-2">{prompt}</p>
         </motion.div>
 
@@ -74,7 +142,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
           >
             {/* Mobile view - card style for small screens */}
             <div className="block sm:hidden">
-              {issues.map((issue, index) => (
+              {sortedIssues.map((issue, index) => (
                 <div 
                   key={issue._id} 
                   className="border-b border-[#D3D3D3] p-3 cursor-pointer hover:bg-[#F0F0F0] transition-colors"
@@ -136,7 +204,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
               </thead>
               <tbody>
                 {/* Each row now represents a case */}
-                {issues.map((issue, index) => (
+                {sortedIssues.map((issue, index) => (
                   <tr 
                     key={issue._id} 
                     className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors cursor-pointer"

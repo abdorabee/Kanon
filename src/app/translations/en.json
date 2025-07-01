@@ -39,7 +39,11 @@
     "hide": "Hide",
     "properties": "Properties",
     "back": "Back",
-    "caseDetails": "Case Details"
+    "caseDetails": "Case Details",
+    "sortByDate": "Date",
+    "sortByCaseNumber": "Case #",
+    "ascending": "Ascending",
+    "descending": "Descending"
   },
   "hero": {
     "title": "Family Court Rulings",
