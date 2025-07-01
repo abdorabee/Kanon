@@ -1,7 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo } from 'react';
-import { FaSort, FaSortUp, FaSortDown, FaCalendarAlt, FaFileAlt, FaFilter } from 'react-icons/fa';
+import { FaSortUp, FaSortDown, FaCalendarAlt, FaFileAlt, FaFilter } from 'react-icons/fa';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 import { Issue } from '../../lib/types';
@@ -37,10 +37,6 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
     router.push(`/case/${issue._id}`);
   };
 
-  // Toggle sort direction between ascending and descending
-  const toggleSortDirection = () => {
-    setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
-  };
 
   // Change sort field between date and case number
   const changeSortField = (field: 'date' | 'caseNumber') => {
