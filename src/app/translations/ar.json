@@ -42,7 +42,15 @@
     "hide": "إخفاء",
     "properties": "الخصائص",
     "back": "رجوع",
-    "caseDetails": "تفاصيل القضية"
+    "caseDetails": "تفاصيل القضية",
+    "sortByDate": "التاريخ",
+    "sortByCaseNumber": "رقم القضية",
+    "ascending": "تصاعدي",
+    "descending": "تنازلي",
+    "sortBy": "فرز",
+    "sortField": "فرز حسب",
+    "sortDirection": "الاتجاه",
+    "currentSort": "مرتب حسب"
   },
   "hero": {
     "title": "أحكام محاكم الأسرة",
