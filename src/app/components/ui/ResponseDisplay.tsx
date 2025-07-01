@@ -1,6 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo } from 'react';
+import { FaSort, FaSortUp, FaSortDown, FaCalendarAlt, FaFileAlt, FaFilter } from 'react-icons/fa';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 import { Issue } from '../../lib/types';
@@ -82,41 +83,83 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
               {t('responseDisplay.searchResults')}: <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-xs sm:text-sm">{issues.length}</span>
             </h1>
             {issues.length > 1 && (
-              <div className="mt-2 sm:mt-0 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                <div className="flex items-center">
+              <div className="mt-3 sm:mt-0 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div className="relative group">
                   <button 
-                    onClick={() => changeSortField('date')}
-                    className={`px-2 py-1 text-xs sm:text-sm rounded-l-md ${sortField === 'date' ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 text-[#333333]'} transition-colors`}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-[#1A3C5E] text-white rounded-md text-xs sm:text-sm hover:bg-[#2a4c6e] transition-colors"
                   >
-                    {t('responseDisplay.sortByDate')}
+                    <FaFilter className="text-xs sm:text-sm" />
+                    <span>{t('responseDisplay.sortBy')}</span>
                   </button>
-                  <button 
-                    onClick={() => changeSortField('caseNumber')}
-                    className={`px-2 py-1 text-xs sm:text-sm rounded-r-md ${sortField === 'caseNumber' ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 text-[#333333]'} transition-colors`}
-                  >
-                    {t('responseDisplay.sortByCaseNumber')}
-                  </button>
+                  
+                  <div className="absolute right-0 mt-1 bg-white shadow-lg rounded-md overflow-hidden z-10 w-48 border border-gray-200 hidden group-hover:block">
+                    <div className="p-2">
+                      <p className="text-xs text-gray-500 mb-1 px-2">{t('responseDisplay.sortField')}:</p>
+                      <button 
+                        onClick={() => changeSortField('date')}
+                        className={`w-full flex items-center justify-between px-2 py-1.5 text-xs sm:text-sm ${sortField === 'date' ? 'bg-[#f0f7ff] text-[#1A3C5E] font-medium' : 'hover:bg-gray-100'} transition-colors rounded-md`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <FaCalendarAlt className="text-xs" />
+                          <span>{t('responseDisplay.sortByDate')}</span>
+                        </div>
+                        {sortField === 'date' && <span className="text-[#1A3C5E] text-xs">✓</span>}
+                      </button>
+                      <button 
+                        onClick={() => changeSortField('caseNumber')}
+                        className={`w-full flex items-center justify-between px-2 py-1.5 text-xs sm:text-sm ${sortField === 'caseNumber' ? 'bg-[#f0f7ff] text-[#1A3C5E] font-medium' : 'hover:bg-gray-100'} transition-colors rounded-md`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <FaFileAlt className="text-xs" />
+                          <span>{t('responseDisplay.sortByCaseNumber')}</span>
+                        </div>
+                        {sortField === 'caseNumber' && <span className="text-[#1A3C5E] text-xs">✓</span>}
+                      </button>
+                      
+                      <div className="border-t border-gray-200 my-1"></div>
+                      <p className="text-xs text-gray-500 mb-1 px-2">{t('responseDisplay.sortDirection')}:</p>
+                      
+                      <button 
+                        onClick={() => setSortDirection('asc')}
+                        className={`w-full flex items-center justify-between px-2 py-1.5 text-xs sm:text-sm ${sortDirection === 'asc' ? 'bg-[#f0f7ff] text-[#1A3C5E] font-medium' : 'hover:bg-gray-100'} transition-colors rounded-md`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <FaSortUp className="text-xs" />
+                          <span>{t('responseDisplay.ascending')}</span>
+                        </div>
+                        {sortDirection === 'asc' && <span className="text-[#1A3C5E] text-xs">✓</span>}
+                      </button>
+                      
+                      <button 
+                        onClick={() => setSortDirection('desc')}
+                        className={`w-full flex items-center justify-between px-2 py-1.5 text-xs sm:text-sm ${sortDirection === 'desc' ? 'bg-[#f0f7ff] text-[#1A3C5E] font-medium' : 'hover:bg-gray-100'} transition-colors rounded-md`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <FaSortDown className="text-xs" />
+                          <span>{t('responseDisplay.descending')}</span>
+                        </div>
+                        {sortDirection === 'desc' && <span className="text-[#1A3C5E] text-xs">✓</span>}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <button 
-                  onClick={toggleSortDirection}
-                  className="flex items-center text-xs sm:text-sm text-[#1A3C5E] hover:text-[#A3CCBE] transition-colors"
-                >
-                  {sortDirection === 'asc' ? (
-                    <>
-                      <span className="mr-1">{t('responseDisplay.ascending')}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
-                      </svg>
-                    </>
-                  ) : (
-                    <>
-                      <span className="mr-1">{t('responseDisplay.descending')}</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
-                      </svg>
-                    </>
-                  )}
-                </button>
+                
+                <div className="flex items-center gap-1 text-xs sm:text-sm text-[#333333]">
+                  <span className="font-medium">{t('responseDisplay.currentSort')}:</span>
+                  <span className="text-[#1A3C5E]">
+                    {sortField === 'date' ? t('responseDisplay.sortByDate') : t('responseDisplay.sortByCaseNumber')}
+                  </span>
+                  <span className="mx-1">•</span>
+                  <span className="flex items-center">
+                    {sortDirection === 'asc' ? 
+                      <FaSortUp className="text-[#1A3C5E] mr-1" /> : 
+                      <FaSortDown className="text-[#1A3C5E] mr-1" />
+                    }
+                    <span className="text-[#1A3C5E]">
+                      {sortDirection === 'asc' ? t('responseDisplay.ascending') : t('responseDisplay.descending')}
+                    </span>
+                  </span>
+                </div>
               </div>
             )}
           </div>
