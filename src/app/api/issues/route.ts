@@ -1,48 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { storeSessionData, generateSessionId } from '@/app/lib/sessionStorage';
+import { authenticatedFetch } from '@/app/lib/auth';
 
-// Function to get a fresh token by logging in
-async function getAccessToken() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-  const loginUrl = `${apiUrl}/api/v1/token`;
-  
-  try {
-    console.log('Attempting to get a fresh token...');
-    
-    // Default credentials
-    const username = 'admin';
-    const password = 'admin_kanony_MEDA';
-    
-    // Form data for login
-    const formData = new URLSearchParams();
-    formData.append('username', username);
-    formData.append('password', password);
-    
-    const response = await fetch(loginUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'accept': 'application/json'
-      },
-      body: formData.toString(),
-      cache: 'no-store'
-    });
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Login failed: ${response.status} ${response.statusText}`);
-      console.error('Error details:', errorText);
-      return null;
-    }
-    
-    const data = await response.json();
-    console.log('Successfully obtained new access token');
-    return data.access_token;
-  } catch (error) {
-    console.error('Error during login:', error);
-    return null;
-  }
-}
+// No local token cache or validation needed - imported from auth.ts
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -55,29 +15,17 @@ export async function GET(request: NextRequest) {
   console.log('Fetching from:', backendUrl);
 
   try {
-    // Get a fresh token by logging in
-    const token = await getAccessToken();
+    // Use the authenticatedFetch utility for automatic token management
+    const response = await authenticatedFetch(backendUrl, {
+      method: 'GET'
+    });
     
-    if (!token) {
+    if (!response) {
       return NextResponse.json(
-        { detail: 'Failed to obtain authentication token' },
+        { detail: 'Failed to make authenticated request' },
         { status: 500 }
       );
     }
-    
-    console.log('API Route: Using fresh Bearer token');
-    
-    const response = await fetch(backendUrl, {
-      method: 'GET',
-      headers: {
-        'accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      // Don't use cache to ensure fresh requests
-      cache: 'no-store',
-      // Add credentials inclusion
-      credentials: 'include',
-    });
 
     if (!response.ok) {
       const errorText = await response.text();
