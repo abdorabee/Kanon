@@ -13,7 +13,7 @@ interface Props {
 // Function to get a fresh token by logging in
 async function getAccessToken() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-  const loginUrl = `${apiUrl}/token`;
+  const loginUrl = `${apiUrl}/api/v1/token`;
   
   try {
     console.log('Attempting to get a fresh token...');
@@ -82,7 +82,7 @@ export default async function ResponsePage({ searchParams }: Props) {
     }
     
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-    const requestUrl = `${apiUrl}/issues/?${query.toString()}`;
+    const requestUrl = `${apiUrl}/api/v1/cases/?${query.toString()}`;
     console.log('Fetching from:', requestUrl);
     
     // Get a fresh token by logging in
