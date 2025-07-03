@@ -4,7 +4,7 @@ import { storeSessionData, generateSessionId } from '@/app/lib/sessionStorage';
 // Function to get a fresh token by logging in
 async function getAccessToken() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-  const loginUrl = `${apiUrl}/token`;
+  const loginUrl = `${apiUrl}/api/v1/token`;
   
   try {
     console.log('Attempting to get a fresh token...');
@@ -47,7 +47,7 @@ async function getAccessToken() {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-  const backendUrl = `${apiUrl}/issues/?${searchParams.toString()}`;
+  const backendUrl = `${apiUrl}/api/v1/cases/?${searchParams.toString()}`;
   
   // Debug environment variables
   console.log('API Route - Environment variables:');
