@@ -1,16 +1,22 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import Footer from './components/layout/Footer';
-import { Amiri, Noto_Naskh_Arabic } from 'next/font/google';
+import { Tajawal, Noto_Naskh_Arabic, Open_Sans } from 'next/font/google';
 import { Header } from './components/ui/Header';
 import { TranslationProvider } from './context/TranslationContext';
 import { LayoutProvider } from './context/LayoutContext';
 
 // Configure the fonts
-const amiri = Amiri({
-  weight: ['400', '700'],
+const tajawal = Tajawal({
+  weight: ['400', '500', '700'],
+  subsets: ['arabic'],
+  variable: '--font-tajawal',
+});
+
+const openSans = Open_Sans({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-  variable: '--font-amiri',
+  variable: '--font-open-sans',
 });
 
 const notoNaskhArabic = Noto_Naskh_Arabic({
@@ -22,11 +28,11 @@ const notoNaskhArabic = Noto_Naskh_Arabic({
 export default async function RootLayout({ children }: { children: ReactNode }) {
 
   return (
-    <html>
+    <html lang="en" className="font-sans">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className={`min-h-screen flex flex-col bg-[#F5F5F5] text-[#333333] antialiased overflow-x-hidden ${amiri.variable} ${notoNaskhArabic.variable}`}>
+      <body className={`min-h-screen flex flex-col bg-[#F5F5F5] text-[#333333] antialiased overflow-x-hidden ${tajawal.variable} ${openSans.variable} ${notoNaskhArabic.variable}`}>
         <TranslationProvider>
           <LayoutProvider>
             <Header />
