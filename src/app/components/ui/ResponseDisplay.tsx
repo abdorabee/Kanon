@@ -249,7 +249,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                     className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors cursor-pointer"
                     onClick={() => navigateToCase(issue)}
                   >
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#333333] text-left">Case {index + 1}</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base font-semibold text-[#333333] text-left">{new Date(issue.created_at).toLocaleDateString()}</th>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.case_number}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.table_name}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.plaintiff_name}</td>
