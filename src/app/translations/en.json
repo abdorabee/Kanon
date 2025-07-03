@@ -37,7 +37,7 @@
     "backToHome": "Back to Home",
     "view": "View",
     "hide": "Hide",
-    "properties": "Properties",
+    "properties": "Session Date",
     "back": "Back",
     "caseDetails": "Case Details",
     "sortByDate": "Date",
@@ -53,7 +53,7 @@
     "title": "Family Court Rulings",
    "subtitle": "Search a comprehensive database of family court rulings and history",
    "examples": "Examples:",
-   "example1": "Search for case 2025/1534",
+   "example1": "Search for case 2025/1562",
    "example2": "Mohammed Ahmed Mahmoud",
    "example3": "Legal implications of contract breach"
   },
