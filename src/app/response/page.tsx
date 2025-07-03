@@ -1,6 +1,6 @@
 import { ResponseDisplay } from "@/app/components/ui/ResponseDisplay";
 import { Issue } from '@/app/lib/types';
-import { getAccessToken, authenticatedFetch } from '@/app/lib/auth';
+import {  authenticatedFetch } from '@/app/lib/auth';
 
 interface SearchParams {
   case?: string;
