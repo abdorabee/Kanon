@@ -243,7 +243,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
               </thead>
               <tbody>
                 {/* Each row now represents a case */}
-                {sortedIssues.map((issue, index) => (
+                {sortedIssues.map((issue) => (
                   <tr 
                     key={issue._id} 
                     className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors cursor-pointer"
