@@ -18,8 +18,12 @@ export function PromptInput() {
     setError(null);
     try {
       // Extract case number if present, otherwise use the prompt as search term
-      const caseNumberMatch = prompt.match(/(?:case number\s+)?(\d{4}\/\d+)/i);
-      const searchParam = caseNumberMatch ? `case=${encodeURIComponent(caseNumberMatch[1])}` : `q=${encodeURIComponent(prompt)}`;
+      // Use a more robust regex that handles both Arabic and English text
+      const caseNumberMatch = prompt.match(/(?:(?:case number|رقم القضية)\s+)?(\d{4}\/\d+)/i);
+      // Safely encode the URI component for both Arabic and Latin characters
+      const searchParam = caseNumberMatch 
+        ? `case=${encodeURIComponent(caseNumberMatch[1])}` 
+        : `q=${encodeURIComponent(prompt)}`;
       
       // Use a clean URL with just the search parameter
       router.push(`/response?${searchParam}`);
@@ -58,7 +62,11 @@ export function PromptInput() {
           placeholder={t('promptInput.placeholder')}
           className="flex-1 bg-transparent border-0 text-[#333333] focus:outline-none focus:ring-0 text-xs sm:text-sm px-1 sm:px-2"
           value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
+          onChange={(e) => {
+            // Ensure proper handling of Arabic and other Unicode text
+            const inputValue = e.target.value;
+            setPrompt(inputValue);
+          }}
           onKeyDown={handleKeyDown}
           disabled={loading}
           aria-label="Legal prompt input"
