@@ -200,7 +200,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                     <div>{issue.plaintiff_name}</div>
                     
                     <div className="font-medium">{t('responseDisplay.defendant')}:</div>
-                    <div className="truncate">{issue.defendant_names.join(', ')}</div>
+                    <div className="truncate">{issue.defendant_names?.join(', ') || t('responseDisplay.noDefendant')}</div>
                   </div>
                   
                   <div className="mt-2">
@@ -253,7 +253,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.case_number}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.table_name}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center">{issue.plaintiff_name}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center truncate max-w-[120px]" title={issue.defendant_names.join(', ')}>{issue.defendant_names.join(', ')}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center truncate max-w-[120px]" title={issue.defendant_names?.join(', ') || t('responseDisplay.noDefendant')}>{issue.defendant_names?.join(', ') || t('responseDisplay.noDefendant')}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-center">
                       <button
                         onClick={(e) => toggleIssueDetails(issue._id, e)}

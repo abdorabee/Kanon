@@ -32,6 +32,7 @@
     "table": "Table",
     "plaintiff": "Plaintiff",
     "defendant": "Defendant(s)",
+    "noDefendant": "No defendants listed",
     "judgment": "Judgment",
     "noResults": "No case details found for your query.",
     "backToHome": "Back to Home",
