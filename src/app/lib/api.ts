@@ -5,9 +5,10 @@ interface ApiResponse {
   data: Issue[];
 }
 
-// Extract case number (e.g., "2025/1562" or "case number 2025/1562")
+// Extract case number (e.g., "2025/1562" or "case number 2025/1562" or Arabic equivalent)
 function parsePrompt(prompt: string): { case_number?: string; search?: string } {
-  const caseNumberMatch = prompt.match(/(?:case number\s+)?(\d{4}\/\d+)/i);
+  // Enhanced regex to support both English "case number" and Arabic "رقم القضية"
+  const caseNumberMatch = prompt.match(/(?:(?:case number|رقم القضية)\s+)?(\d{4}\/\d+)/i);
   if (caseNumberMatch) {
     return { case_number: caseNumberMatch[1] };
   }
