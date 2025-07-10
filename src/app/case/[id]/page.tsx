@@ -1,30 +1,119 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/app/components/ui/Button';
 import { useTranslation } from '@/app/context/TranslationContext';
 import { useCaseStore } from '@/app/lib/store';
+import { Issue } from '@/app/lib/types';
 
 export default function CaseDetailsPage() {
   const router = useRouter();
+  const params = useParams();
   const { t } = useTranslation();
-  const { selectedCase } = useCaseStore();
+  const { selectedCase, setSelectedCase } = useCaseStore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  // Initialize caseData with null to avoid TypeScript errors
+  const [caseData, setCaseData] = useState<Issue | null>(null);
 
-  // If we don't have the case data in the store, redirect back to the search page
+  // Try to fetch the case data if it's not in the store
   useEffect(() => {
-    if (!selectedCase) {
-      router.push('/response');
-    }
-  }, [selectedCase, router]);
+    const fetchCaseData = async () => {
+      // If we already have the case in the store, use that
+      if (selectedCase) {
+        setCaseData(selectedCase);
+        return;
+      }
 
-  if (!selectedCase) {
+      // Otherwise, try to fetch it from the API
+      if (params?.id) {
+        setLoading(true);
+        setError(null);
+        
+        try {
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+          const caseId = params.id as string;
+          
+          // Handle different ID formats
+          let requestUrl;
+          if (caseId.includes('-')) {
+            // Format for case numbers with dashes (converted from slashes)
+            const originalCaseNumber = caseId.replace(/-/g, '/');
+            requestUrl = `${baseUrl}/api/v2/cases/?case_number=${encodeURIComponent(originalCaseNumber)}`;
+          } else {
+            // Format for MongoDB IDs
+            requestUrl = `${baseUrl}/api/v2/cases/${caseId}`;
+          }
+          
+          console.log('Fetching case data from:', requestUrl);
+          
+          const response = await fetch(requestUrl);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to fetch case: ${response.status} ${response.statusText}`);
+          }
+          
+          const data = await response.json();
+          console.log('Case API response:', data);
+          
+          // Handle different response formats
+          let caseItem: Issue | null = null;
+          
+          if (data && data.case) {
+            // New API format with case property
+            caseItem = data.case;
+          } else if (Array.isArray(data) && data.length > 0) {
+            // Array of cases, take the first one
+            caseItem = data[0];
+          } else if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
+            // Nested data array
+            caseItem = data.data[0];
+          } else if (data && !Array.isArray(data)) {
+            // Direct case object
+            caseItem = data;
+          }
+          
+          if (caseItem) {
+            setCaseData(caseItem);
+            setSelectedCase(caseItem); // Also update the store
+          } else {
+            throw new Error('Case not found in API response');
+          }
+        } catch (err) {
+          console.error('Error fetching case:', err);
+          setError(err instanceof Error ? err.message : 'Failed to fetch case data');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    
+    fetchCaseData();
+  }, [params?.id, selectedCase, setSelectedCase]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
+        <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold text-[#1A3C5E] mb-4">{t('loading') || 'Loading...'}</h1>
+          <p className="text-[#333333] mb-6">{t('loadingCaseMessage') || 'Fetching case details...'}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !caseData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
         <div className="bg-white p-6 rounded-xl shadow-md max-w-md w-full">
           <h1 className="text-2xl font-bold text-[#1A3C5E] mb-4">{t('notFound') || 'Case Not Found'}</h1>
-          <p className="text-[#333333] mb-6">{t('caseNotFoundMessage') || 'The requested case could not be found.'}</p>
+          <p className="text-[#333333] mb-6">
+            {error || t('caseNotFoundMessage') || 'The requested case could not be found.'}
+          </p>
           <Button onClick={() => router.back()}>{t('back') || 'Go Back'}</Button>
         </div>
       </div>
@@ -45,7 +134,7 @@ export default function CaseDetailsPage() {
           </h1>
           <div className="flex items-center">
             <span className="text-white bg-[#1A3C5E] px-2 py-1 rounded-full text-xs">
-              {selectedCase.case_number}
+              {caseData.case_number}
             </span>
           </div>
         </motion.div>
@@ -61,28 +150,28 @@ export default function CaseDetailsPage() {
               <h2 className="text-lg font-semibold text-[#1A3C5E] mb-2">
                 {t('responseDisplay.caseNumber') || 'Case Number'}
               </h2>
-              <p className="text-[#333333]">{selectedCase.case_number}</p>
+              <p className="text-[#333333]">{caseData.case_number}</p>
             </div>
             
             <div>
               <h2 className="text-lg font-semibold text-[#1A3C5E] mb-2">
                 {t('responseDisplay.table') || 'Table'}
               </h2>
-              <p className="text-[#333333]">{selectedCase.table_name}</p>
+              <p className="text-[#333333]">{caseData.table_name}</p>
             </div>
             
             <div>
               <h2 className="text-lg font-semibold text-[#1A3C5E] mb-2">
                 {t('responseDisplay.plaintiff') || 'Plaintiff'}
               </h2>
-              <p className="text-[#333333]">{selectedCase.plaintiff_name}</p>
+              <p className="text-[#333333]">{caseData.plaintiff_name}</p>
             </div>
             
             <div>
               <h2 className="text-lg font-semibold text-[#1A3C5E] mb-2">
                 {t('responseDisplay.defendant') || 'Defendant'}
               </h2>
-              <p className="text-[#333333]">{selectedCase.defendant_names.join(', ')}</p>
+              <p className="text-[#333333]">{caseData.defendant_names?.join(', ') || t('responseDisplay.noDefendant')}</p>
             </div>
             
             <div className="md:col-span-2">
@@ -90,7 +179,13 @@ export default function CaseDetailsPage() {
                 {t('responseDisplay.judgment') || 'Judgment'}
               </h2>
               <div className="bg-[#F0F0F0] p-4 rounded-lg">
-                <p className="text-[#333333] whitespace-pre-wrap">{selectedCase.judgment_or_decision_info}</p>
+                <p className="text-[#333333] whitespace-pre-wrap">
+                  {caseData.judgment_or_decision_info || 
+                   (caseData.sessions && caseData.sessions.length > 0 && caseData.sessions[0]?.final_judgment ? 
+                    caseData.sessions[0].final_judgment : 
+                    t('responseDisplay.noJudgmentInfo'))
+                  }
+                </p>
               </div>
             </div>
             
@@ -99,7 +194,7 @@ export default function CaseDetailsPage() {
                 {t('common.createdAt')}
               </h2>
               <p className="text-[#333333]">
-                {new Date(selectedCase.created_at).toLocaleDateString()} {new Date(selectedCase.created_at).toLocaleTimeString()}
+                {new Date(caseData.created_at).toLocaleDateString()} {new Date(caseData.created_at).toLocaleTimeString()}
               </p>
             </div>
           </div>
