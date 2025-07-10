@@ -1,4 +1,5 @@
 import { ResponseDisplay } from "@/app/components/ui/ResponseDisplay";
+
 import { Issue } from '@/app/lib/types';
 import {  authenticatedFetch } from '@/app/lib/auth';
 
@@ -57,12 +58,24 @@ export default async function ResponsePage({ searchParams }: Props) {
     if (response.ok) {
       const data = await response.json();
       console.log('API request succeeded');
+      console.log('API response structure:', JSON.stringify(data).substring(0, 200) + '...');
+      
       if (Array.isArray(data)) {
+        // Direct array of issues
         issues = data;
-        console.log(`Found ${data.length} issues`);
+        console.log(`Found ${data.length} issues (direct array)`);
       } else if (data && data.data && Array.isArray(data.data)) {
+        // Nested data property containing array
         issues = data.data;
         console.log(`Found ${data.data.length} issues (nested in data property)`);
+      } else if (data && Array.isArray(data.case)) {
+        // New API format with case array
+        issues = data.case;
+        console.log(`Found ${data.case.length} cases (new API format)`);
+      } else if (data && data.case) {
+        // Single case object in new API format
+        issues = [data.case];
+        console.log('Found 1 case (single case object)');
       } else {
         console.error('Unexpected response format:', data);
       }
@@ -79,6 +92,7 @@ export default async function ResponsePage({ searchParams }: Props) {
   return (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
       <ResponseDisplay prompt={prompt} issues={issues} />
     </>
   );
