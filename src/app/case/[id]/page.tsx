@@ -34,7 +34,7 @@ export default function CaseDetailsPage() {
         
         try {
           const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-          let caseId = params.id as string;
+          const caseId = params.id as string;
           
           // Handle different ID formats
           let requestUrl;
