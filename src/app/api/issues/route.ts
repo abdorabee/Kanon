@@ -6,8 +6,8 @@ import { authenticatedFetch } from '@/app/lib/auth';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-  const backendUrl = `${apiUrl}/api/v1/cases/?${searchParams.toString()}`;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+  const backendUrl = `${baseUrl}/api/v2/cases/?${searchParams.toString()}`;
   
   // Debug environment variables
   console.log('API Route - Environment variables:');

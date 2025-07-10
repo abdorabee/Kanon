@@ -23,18 +23,21 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const [sortField, setSortField] = useState<'date' | 'caseNumber'>('date'); // Default to sorting by date
   const { t } = useTranslation();
 
-  const toggleIssueDetails = (issueId: string, event?: React.MouseEvent) => {
+  const toggleIssueDetails = (issueId: string | number, event?: React.MouseEvent) => {
     // If event exists, stop propagation to prevent navigation when clicking the toggle button
     if (event) {
       event.stopPropagation();
     }
-    setExpandedIssues((prev) => ({ ...prev, [issueId]: !prev[issueId] }));
+    const id = String(issueId); // Convert to string to ensure it works as an object key
+    setExpandedIssues((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const navigateToCase = (issue: Issue) => {
     // Store the selected case in the global store
     useCaseStore.getState().setSelectedCase(issue);
-    router.push(`/case/${issue._id}`);
+    // Use case_number as identifier if _id is not available
+    const id = issue._id || `case-${issue.case_number}`;
+    router.push(`/case/${id}`);
   };
 
 
@@ -47,8 +50,9 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const sortedIssues = useMemo(() => {
     return [...issues].sort((a, b) => {
       if (sortField === 'date') {
-        const dateA = new Date(a.created_at).getTime();
-        const dateB = new Date(b.created_at).getTime();
+        // Use last_updated if available, otherwise fall back to created_at
+        const dateA = new Date(a.last_updated || a.created_at).getTime();
+        const dateB = new Date(b.last_updated || b.created_at).getTime();
         return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
       } else {
         // Extract numeric part from case numbers for proper numeric sorting
@@ -183,7 +187,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
             <div className="block sm:hidden">
               {sortedIssues.map((issue, index) => (
                 <div 
-                  key={issue._id} 
+                  key={issue._id || `mobile-${index}`} 
                   className="border-b border-[#D3D3D3] p-3 cursor-pointer hover:bg-[#F0F0F0] transition-colors"
                   onClick={() => navigateToCase(issue)}
                 >
@@ -205,13 +209,13 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                   
                   <div className="mt-2">
                     <button
-                      onClick={(e) => toggleIssueDetails(issue._id, e)}
+                      onClick={(e) => toggleIssueDetails(issue._id || `judgment-${index}`, e)}
                       className="text-[#1A3C5E] hover:text-[#A3CCBE] text-xs font-medium underline"
                     >
-                      {expandedIssues[issue._id] ? t('responseDisplay.hide') : t('responseDisplay.view')} {t('responseDisplay.judgment')}
+                      {expandedIssues[issue._id || `judgment-${index}`] ? t('responseDisplay.hide') : t('responseDisplay.view')} {t('responseDisplay.judgment')}
                     </button>
                     <AnimatePresence>
-                      {expandedIssues[issue._id] && (
+                      {expandedIssues[issue._id || `judgment-${index}`] && (
                         <motion.div
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
@@ -219,7 +223,12 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                           className="mt-2 p-2 bg-[#F0F0F0] rounded text-xs text-[#333333]"
                         >
-                          {issue.judgment_or_decision_info}
+                          {issue.judgment_or_decision_info || 
+                            (issue.sessions && issue.sessions.length > 0 ? 
+                              issue.sessions[0].final_judgment : 
+                              t('responseDisplay.noJudgmentInfo')
+                            )
+                          }
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -243,9 +252,9 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
               </thead>
               <tbody>
                 {/* Each row now represents a case */}
-                {sortedIssues.map((issue) => (
+                {sortedIssues.map((issue, index) => (
                   <tr 
-                    key={issue._id} 
+                    key={issue._id || `desktop-${index}`} 
                     className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors cursor-pointer"
                     onClick={() => navigateToCase(issue)}
                   >
@@ -256,13 +265,13 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-[#333333] text-center truncate max-w-[120px]" title={issue.defendant_names?.join(', ') || t('responseDisplay.noDefendant')}>{issue.defendant_names?.join(', ') || t('responseDisplay.noDefendant')}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm md:text-base text-center">
                       <button
-                        onClick={(e) => toggleIssueDetails(issue._id, e)}
+                        onClick={(e) => toggleIssueDetails(issue._id || `desktop-judgment-${index}`, e)}
                         className="text-[#1A3C5E] hover:text-[#A3CCBE] text-xs sm:text-sm md:text-base font-medium underline"
                       >
-                        {expandedIssues[issue._id] ? t('responseDisplay.hide') : t('responseDisplay.view')}
+                        {expandedIssues[issue._id || `desktop-judgment-${index}`] ? t('responseDisplay.hide') : t('responseDisplay.view')}
                       </button>
                       <AnimatePresence>
-                        {expandedIssues[issue._id] && (
+                        {expandedIssues[issue._id || `desktop-judgment-${index}`] && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
@@ -270,7 +279,12 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
                             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                             className="mt-2 p-2 bg-[#F0F0F0] rounded text-xs sm:text-sm md:text-base text-[#333333]"
                           >
-                            {issue.judgment_or_decision_info}
+                            {issue.judgment_or_decision_info || 
+                            (issue.sessions && issue.sessions.length > 0 ? 
+                              issue.sessions[0].final_judgment : 
+                              t('responseDisplay.noJudgmentInfo')
+                            )
+                          }
                           </motion.div>
                         )}
                       </AnimatePresence>
