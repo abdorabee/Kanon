@@ -41,8 +41,8 @@ export default async function ResponsePage({ searchParams }: Props) {
       query.append('search', searchTerm);
     }
     
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-    const requestUrl = `${apiUrl}/api/v1/cases/?${query.toString()}`;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+    const requestUrl = `${baseUrl}/api/v2/cases/?${query.toString()}`;
     console.log('Fetching from:', requestUrl);
     
     // Use the authenticatedFetch utility for automatic token management

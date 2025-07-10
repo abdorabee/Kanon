@@ -14,8 +14,8 @@ export async function validateToken(token: string): Promise<boolean> {
   
   try {
     // Make a simple API call to test the token
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-    const testUrl = `${apiUrl}/api/v1/cases/?skip=0&limit=1`;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+    const testUrl = `${baseUrl}/api/v2/cases/?skip=0&limit=1`;
     
     const response = await fetch(testUrl, {
       method: 'GET',
@@ -38,8 +38,8 @@ export async function validateToken(token: string): Promise<boolean> {
  * @returns The access token or null if login fails
  */
 async function loginAndGetToken(): Promise<string | null> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
-  const loginUrl = `${apiUrl}/api/v1/token`;
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.kanony.xyz';
+  const loginUrl = `${baseUrl}/api/v2/token`;
   
   try {
     console.log('Attempting to get a fresh token...');
