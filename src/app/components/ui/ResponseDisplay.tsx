@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { FaSortUp, FaSortDown, FaCalendarAlt, FaFileAlt, FaFilter } from 'react-icons/fa';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
@@ -35,9 +35,21 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const navigateToCase = (issue: Issue) => {
     // Store the selected case in the global store
     useCaseStore.getState().setSelectedCase(issue);
-    // Use case_number as identifier if _id is not available
-    const id = issue._id || `case-${issue.case_number}`;
+    
+    // Use _id if available, otherwise use case_number but format it properly
+    let id;
+    if (issue._id) {
+      id = issue._id;
+    } else {
+      // Remove any slashes from the case number to prevent routing issues
+      const cleanCaseNumber = issue.case_number.replace(/\//g, '-');
+      id = cleanCaseNumber;
+    }
+    
     router.push(`/case/${id}`);
+    
+    // Log for debugging
+    console.log('Navigating to case with ID:', id);
   };
 
 
@@ -45,6 +57,18 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const changeSortField = (field: 'date' | 'caseNumber') => {
     setSortField(field);
   };
+
+  // Debug log to check issue structure
+  useEffect(() => {
+    if (issues.length > 0) {
+      console.log('First issue structure:', issues[0]);
+      console.log('Sessions available:', issues[0].sessions);
+      if (issues[0].sessions && issues[0].sessions.length > 0) {
+        console.log('First session:', issues[0].sessions[0]);
+        console.log('Final judgment:', issues[0].sessions[0].final_judgment);
+      }
+    }
+  }, [issues]);
 
   // Sort issues by the selected field and direction
   const sortedIssues = useMemo(() => {
