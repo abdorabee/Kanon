@@ -17,7 +17,7 @@ interface ResponseDisplayProps {
 
 
 
-export function ResponseDisplay({ prompt, issues, totalCount }: ResponseDisplayProps) {
+export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
   const router = useRouter();
   const [expandedIssues, setExpandedIssues] = useState<{ [key: string]: boolean }>({});
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc'); // Default to newest first
