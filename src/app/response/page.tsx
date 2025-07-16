@@ -30,9 +30,10 @@ export default async function ResponsePage({ searchParams }: Props) {
     console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || 'not set');
     console.log('API_TOKEN present:', process.env.API_TOKEN ? 'yes (first 5 chars: ' + process.env.API_TOKEN?.substring(0, 5) + '...)' : 'no');
     
+    // Set a high limit value to ensure we get all results
     const query = new URLSearchParams({
       skip: '0',
-      limit: '10',
+      limit: '1000', // High value to effectively get all results
     });
     
     // Add either case_number or search parameter
@@ -59,6 +60,7 @@ export default async function ResponsePage({ searchParams }: Props) {
       const data = await response.json();
       console.log('API request succeeded');
       console.log('API response structure:', JSON.stringify(data).substring(0, 200) + '...');
+     
       
       if (Array.isArray(data)) {
         // Direct array of issues
@@ -89,11 +91,15 @@ export default async function ResponsePage({ searchParams }: Props) {
   }
 
   // Add metadata for better mobile display
+  // Calculate total count for pagination
+  const totalCount = issues.length;
+  console.log('Total issues found:', totalCount);
+
   return (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-      <ResponseDisplay prompt={prompt} issues={issues} />
+      <ResponseDisplay prompt={prompt} issues={issues} totalCount={totalCount} />
     </>
   );
 }
