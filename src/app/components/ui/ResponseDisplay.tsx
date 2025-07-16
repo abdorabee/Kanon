@@ -12,15 +12,18 @@ import { useCaseStore } from '../../lib/store';
 interface ResponseDisplayProps {
   prompt: string;
   issues: Issue[];
+  totalCount?: number;
 }
 
 
 
-export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
+export function ResponseDisplay({ prompt, issues, totalCount }: ResponseDisplayProps) {
   const router = useRouter();
   const [expandedIssues, setExpandedIssues] = useState<{ [key: string]: boolean }>({});
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc'); // Default to newest first
   const [sortField, setSortField] = useState<'date' | 'caseNumber'>('date'); // Default to sorting by date
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(10);
   const { t } = useTranslation();
 
   const toggleIssueDetails = (issueId: string | number, event?: React.MouseEvent) => {
@@ -86,6 +89,31 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
       }
     });
   }, [issues, sortDirection, sortField]);
+  
+  // Get current issues for pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentIssues = sortedIssues.slice(indexOfFirstItem, indexOfLastItem);
+  
+  // Calculate total pages
+  const totalPages = Math.ceil(sortedIssues.length / itemsPerPage);
+  
+  // Change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  
+  // Go to next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  
+  // Go to previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#F5F5F5] text-[#333333] p-2 sm:p-4 py-6 sm:py-8 @container">
@@ -276,7 +304,7 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
               </thead>
               <tbody>
                 {/* Each row now represents a case */}
-                {sortedIssues.map((issue, index) => (
+                {currentIssues.map((issue, index) => (
                   <tr 
                     key={issue._id || `desktop-${index}`} 
                     className="border-b border-[#D3D3D3] hover:bg-[#F0F0F0] transition-colors cursor-pointer"
@@ -320,6 +348,89 @@ export function ResponseDisplay({ prompt, issues }: ResponseDisplayProps) {
           </motion.div>
         )}
 
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex justify-center items-center gap-2 mt-4 mb-2"
+          >
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 rounded ${currentPage === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#1A3C5E] text-white hover:bg-[#2A4C6E]'}`}
+            >
+              &laquo;
+            </button>
+            
+            <div className="flex gap-1">
+              {/* Show first page */}
+              {currentPage > 3 && (
+                <button
+                  onClick={() => paginate(1)}
+                  className={`px-3 py-1 rounded ${currentPage === 1 ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                >
+                  1
+                </button>
+              )}
+              
+              {/* Show ellipsis if needed */}
+              {currentPage > 3 && <span className="px-2 py-1">...</span>}
+              
+              {/* Show pages around current page */}
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (currentPage <= 3) {
+                  // If we're near the start, show first 5 pages
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  // If we're near the end, show last 5 pages
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  // Otherwise show 2 before and 2 after current page
+                  pageNum = currentPage - 2 + i;
+                }
+                
+                // Only show if page number is valid
+                if (pageNum > 0 && pageNum <= totalPages) {
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => paginate(pageNum)}
+                      className={`px-3 py-1 rounded ${currentPage === pageNum ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                }
+                return null;
+              })}
+              
+              {/* Show ellipsis if needed */}
+              {currentPage < totalPages - 2 && <span className="px-2 py-1">...</span>}
+              
+              {/* Show last page */}
+              {currentPage < totalPages - 2 && (
+                <button
+                  onClick={() => paginate(totalPages)}
+                  className={`px-3 py-1 rounded ${currentPage === totalPages ? 'bg-[#1A3C5E] text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                >
+                  {totalPages}
+                </button>
+              )}
+            </div>
+            
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 rounded ${currentPage === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#1A3C5E] text-white hover:bg-[#2A4C6E]'}`}
+            >
+              &raquo;
+            </button>
+          </motion.div>
+        )}
+        
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
